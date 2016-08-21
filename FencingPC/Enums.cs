@@ -35,4 +35,14 @@ namespace FencingPC
         Student,                // Student menber, typically for a short period of time, e.g. from a university course
         Guest                   // Guest (no member at all), could be excluded from ranking
     }
+
+    /// <summary>
+    /// Enumeration of possible edit modes
+    /// </summary>
+    public enum EditModeType
+    {
+        None,
+        Create,
+        Edit
+    }
 }

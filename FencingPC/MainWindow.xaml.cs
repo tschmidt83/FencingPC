@@ -31,16 +31,8 @@ namespace FencingPC
         // Directory of the executable
         private string ProjectDir = string.Empty;
 
-        private bool m_EditModeEnabled = false;
-
-        /// <summary>
-        /// Indicates whether the edit mode (for a fencer's data in the roster) is enabled
-        /// </summary>
-        public bool EditModeEnabled
-        {
-            get { return m_EditModeEnabled; }
-            set { m_EditModeEnabled = value; NotifyPropertyChanged("EditModeEnabled"); }
-        }
+        // Edit mode
+        private EditModeType EditMode = EditModeType.None;
 
         // Currently selected fencer
         private Fencer SelectedFencer = null;
@@ -70,7 +62,7 @@ namespace FencingPC
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
                 using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\roster.xml", System.IO.FileMode.Open))
-                {
+                    {
                     Roster = (ObservableCollection<Fencer>)serializer.Deserialize(fs);
                 }
             }
@@ -96,12 +88,114 @@ namespace FencingPC
 
         private void btnEditFencer_Click(object sender, RoutedEventArgs e)
         {
+            if(EditMode == EditModeType.None)
+            {
+                // Enable edit mide
+                EditMode = EditModeType.Edit;
+                grdFencerData.IsEnabled = true;
+                pnlRoster.IsEnabled = false;
 
+                // Select fencer
+                if(lbRoster.SelectedItem != null)
+                {
+                    SelectedFencer = lbRoster.SelectedItem as Fencer;
+                    SetEditFencerData();
+                }
+            }
         }
 
         private void btnNewFencer_Click(object sender, RoutedEventArgs e)
         {
+            if (EditMode == EditModeType.None)
+            {
+                int rosterID = 1;
+                // Determine next free roster ID;
+                if (Roster.Count > 0)
+                {
+                    Fencer last = Roster.Last();
+                    rosterID = last.RosterID + 1;
+                }
 
+                // Enable edit mode
+                EditMode = EditModeType.Create;
+                grdFencerData.IsEnabled = true;
+                pnlRoster.IsEnabled = false;
+
+                // Create new (blank) fencer
+                Fencer f = new Fencer();
+                f.FirstName = GetResourceString("str_FirstName");
+                f.LastName = GetResourceString("str_LastName");
+                f.Gender = GenderType.Male;
+                f.BirthDate = DateTime.Now;
+                f.Membership = MembershipType.RegularMember;
+                f.RosterID = rosterID;
+
+                // Add to list
+                Roster.Add(f);
+
+                // Select current fencer
+                SelectedFencer = f;
+                SetEditFencerData();
+            }
+        }
+
+        private void SetEditFencerData()
+        {
+            if (SelectedFencer != null)
+            {
+                tbFencerFirstName.Text = SelectedFencer.FirstName;
+                tbFencerLastName.Text = SelectedFencer.LastName;
+                tbFencerBirthDay.Text = SelectedFencer.BirthDate.Day.ToString();
+                tbFencerBirthMonth.Text = SelectedFencer.BirthDate.Month.ToString();
+                tbFencerBirthYear.Text = SelectedFencer.BirthDate.Year.ToString();
+                cbFencerGender.SelectedIndex = (int)SelectedFencer.Gender;
+                cbFencerMembership.SelectedIndex = (int)SelectedFencer.Membership;
+                tbFencerID.Text = SelectedFencer.RosterID.ToString();
+                SetFencerImage(SelectedFencer.ImageName);
+            }
+        }
+
+        private void SetFencerImage(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                imgFencerImage.Source = null;
+            }
+            else
+            {
+                if (System.IO.File.Exists(ProjectDir + @"\images\" + path))
+                {
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(ProjectDir + @"\images\" + path, UriKind.Absolute);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    imgFencerImage.Source = img;
+                }
+                else
+                {
+                    imgFencerImage.Source = null;
+                }
+            }
+        }
+
+        private void ClearTextBoxes()
+        {
+            tbFencerFirstName.Text = "";
+            tbFencerLastName.Text = "";
+            tbFencerBirthDay.Text = "";
+            tbFencerBirthMonth.Text = "";
+            tbFencerBirthYear.Text = "";
+            tbFencerID.Text = "";
+        }
+
+        private void SaveRoster()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
+            using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\roster.xml", System.IO.FileMode.Create))
+            {
+                serializer.Serialize(fs, Roster);
+            }
         }
 
         private void btnDeleteFencer_Click(object sender, RoutedEventArgs e)
@@ -121,12 +215,87 @@ namespace FencingPC
 
         private void btnFencerOK_Click(object sender, RoutedEventArgs e)
         {
+            bool success = true;
 
+            string firstName = tbFencerFirstName.Text;
+            if (string.IsNullOrEmpty(firstName))
+                success = false;
+
+            string lastName = tbFencerLastName.Text;
+            if (string.IsNullOrEmpty(lastName))
+                success = false;
+
+            GenderType gender = GenderType.Male;
+            MembershipType membership = MembershipType.RegularMember;
+
+
+            int birthDay = 0;
+            int birthMonth = 0;
+            int birthYear = 0;
+
+            int rosterID = 0;
+
+            try
+            {
+                birthDay = int.Parse(tbFencerBirthDay.Text);
+                birthMonth = int.Parse(tbFencerBirthMonth.Text);
+                birthYear = int.Parse(tbFencerBirthYear.Text);
+
+                gender = (GenderType)cbFencerGender.SelectedIndex;
+                membership = (MembershipType)cbFencerMembership.SelectedIndex;
+
+                rosterID = int.Parse(tbFencerID.Text);
+            }
+            catch
+            {
+                success = false;
+            }
+
+            if (success)
+            {
+                if (EditMode == EditModeType.Create)
+                {
+                    Fencer f = new Fencer();
+                    f.FirstName = firstName;
+                    f.LastName = lastName;
+                    f.Gender = gender;
+                    f.BirthDate = new DateTime(birthYear, birthMonth, birthDay);
+                    f.Membership = membership;
+                    f.RosterID = rosterID;
+                    Roster.Add(f);
+                    SaveRoster();
+                }
+                else if (EditMode == EditModeType.Edit)
+                {
+                    SelectedFencer.FirstName = firstName;
+                    SelectedFencer.LastName = lastName;
+                    SelectedFencer.Gender = gender;
+                    SelectedFencer.BirthDate = new DateTime(birthYear, birthMonth, birthDay);
+                    SelectedFencer.Membership = membership;
+                    SaveRoster();
+                    lbRoster.ItemsSource = null;
+                    lbRoster.ItemsSource = Roster;
+                }
+                ClearTextBoxes();
+                EditMode = EditModeType.None;
+                grdFencerData.IsEnabled = false;
+                pnlRoster.IsEnabled = true;
+                imgFencerImage.Source = null;
+                SelectedFencer = null;
+            }
         }
 
         private void btnFencerCancel_Click(object sender, RoutedEventArgs e)
         {
+            if(EditMode == EditModeType.Create)
+                Roster.Remove(SelectedFencer);
 
+            ClearTextBoxes();
+            EditMode = EditModeType.None;
+            grdFencerData.IsEnabled = false;
+            pnlRoster.IsEnabled = true;
+            imgFencerImage.Source = null;
+            SelectedFencer = null;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

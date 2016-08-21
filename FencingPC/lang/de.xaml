@@ -29,7 +29,10 @@
     <sys:String x:Key="str_Member_Regular">Vereinsmitglied</sys:String>
     <sys:String x:Key="str_Member_Student">Student</sys:String>
     <sys:String x:Key="str_Member_Guest">Gast</sys:String>
-    
+
+    <sys:String x:Key="str_FirstName">Vorname</sys:String>
+    <sys:String x:Key="str_LastName">Nachname</sys:String>
+
     <!-- Button captions -->
     <sys:String x:Key="str_Button_Edit">Bearbeiten</sys:String>
     <sys:String x:Key="str_Button_New">Neu</sys:String>

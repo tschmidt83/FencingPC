@@ -31,7 +31,7 @@
                 </DockPanel>
 
                 <!-- Controls for editing a dataset -->
-                <Grid Grid.Row="0" Grid.Column="0" Name="grdFencerData" IsEnabled="{Binding EditModeEnabled}">
+                <Grid Grid.Row="0" Grid.Column="0" Name="grdFencerData" IsEnabled="False">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -82,7 +82,7 @@
                     </StackPanel>
 
                     <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="7" Grid.Column="1" Content="{DynamicResource str_Button_OK}" Name="btnFencerOK" Click="btnFencerOK_Click"/>
-                    <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="8" Grid.Column="1" Content="{DynamicResource str_Button_OK}" VerticalAlignment="Top" Name="btnFencerCancel" Click="btnFencerCancel_Click"/>
+                    <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="8" Grid.Column="1" Content="{DynamicResource str_Button_Cancel}" VerticalAlignment="Top" Name="btnFencerCancel" Click="btnFencerCancel_Click"/>
                 </Grid>
             </Grid>
         </TabItem>
