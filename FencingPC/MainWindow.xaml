@@ -5,8 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FencingPC"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="{DynamicResource str_Title_Main}" Height="480" Width="640" Loaded="Window_Loaded" Closing="Window_Closing">
+    <TabControl TabStripPlacement="Top">
+        <!-- Roster management -->
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Members}"/>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <DockPanel Grid.Row="0" Grid.Column="1" LastChildFill="True" Name="pnlRoster">
+                    <!-- Roster and control buttons -->
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Delete}" Name="btnDeleteFencer" Click="btnDeleteFencer_Click"/>
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Edit}" Name="btnEditFencer" Click="btnEditFencer_Click"/>
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_New}" Name="btnNewFencer" Click="btnNewFencer_Click"/>   
+                    
+                    <ListBox DockPanel.Dock="Top" Style="{StaticResource StandardListBoxStyle}" Name="lbRoster"/>
+                </DockPanel>
+                
+                <!-- Controls for editing a dataset -->
+                <Grid Grid.Row="0" Grid.Column="0" Name="grdFencerData" IsEnabled="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="{DynamicResource str_Header_FirstName}"/>
+                    <TextBox Style="{StaticResource StandardTextBoxStyle}" Grid.Row="0" Grid.Column="1" Name="tbFencerFirstName"/>
+
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="{DynamicResource str_Header_LastName}"/>
+                    <TextBox Style="{StaticResource StandardTextBoxStyle}" Grid.Row="1" Grid.Column="1" Name="tbFencerLastName"/>
+
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="{DynamicResource str_Header_Gender}"/>
+                    <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="2" Grid.Column="1" Name="cbFencerGender"/>
+
+                        <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="{DynamicResource str_Header_Birthdate}"/>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                        <TextBox Style="{StaticResource StandardTextBoxStyle}" Width="50" Name="tbFencerBirthDay"/>
+                        <TextBlock Style="{StaticResource StandardTextBlockStyle}" Text="."/>
+                        <TextBox Style="{StaticResource StandardTextBoxStyle}" Width="50" Name="tbFencerBirthMonth"/>
+                        <TextBlock Style="{StaticResource StandardTextBlockStyle}" Text="."/>
+                        <TextBox Style="{StaticResource StandardTextBoxStyle}" Width="100" Name="tbFencerBirthYear"/>
+                    </StackPanel>
+
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="4" Grid.Column="0" Text="{DynamicResource str_Header_Membership}"/>
+                    <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="4" Grid.Column="1" Name="cbFencerMembership"/>
+
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="5" Grid.Column="0" Text="{DynamicResource str_Header_ID}" Foreground="LightGray"/>
+                    <TextBox Style="{StaticResource StandardTextBoxStyle}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" Foreground="LightGray" Name="tbFencerID"/>
+
+                    <!-- Image -->
+                    <Image Grid.Column="0" Grid.Row="6" Grid.RowSpan="4" Name="imgFencerImage"/>
+
+                    <StackPanel Grid.Row="6" Grid.Column="1">
+                        <Button Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_ImageWebcam}" Name="btnFencerImage_Webcam" Click="btnFencerImage_Webcam_Click"/>
+                        <!--Button Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_ImageFile"/-->
+                        <Button Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_ImageDelete}" Name="btnFencerImage_Delete" Click="btnFencerImage_Delete_Click"/>
+                    </StackPanel>
+
+                    <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="7" Grid.Column="1" Content="{DynamicResource str_Button_OK}" Name="btnFencerOK" Click="btnFencerOK_Click"/>
+                    <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="8" Grid.Column="1" Content="{DynamicResource str_Button_OK}" VerticalAlignment="Top" Name="btnFencerCancel" Click="btnFencerCancel_Click"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

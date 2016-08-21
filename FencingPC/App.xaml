@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:FencingPC"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Styles and templates -->
+                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="DataTemplates.xaml"/>
+                
+                <!-- Default language -->
+                <ResourceDictionary Source="lang/de.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
