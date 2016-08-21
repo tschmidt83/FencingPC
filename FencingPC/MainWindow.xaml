@@ -87,6 +87,15 @@
             </Grid>
         </TabItem>
         
+        <!-- Tournament -->
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Tournament}"/>
+            </TabItem.Header>
+
+            <Grid Name="grdTournament"/>
+        </TabItem>
+        
         <!-- Application settings -->
         <TabItem>
             <TabItem.Header>

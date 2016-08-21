@@ -9,6 +9,7 @@
     
     <!-- Headers -->
     <sys:String x:Key="str_Header_Members">Mitglieder</sys:String>
+    <sys:String x:Key="str_Header_Tournament">Turnier</sys:String>
     <sys:String x:Key="str_Header_Settings">Einstellungen</sys:String>
 
     <sys:String x:Key="str_Header_FirstName">Vorname:</sys:String>
