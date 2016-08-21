@@ -73,6 +73,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GetWebcamImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="lang\de.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,6 +91,9 @@
     </Compile>
     <Compile Include="Enums.cs" />
     <Compile Include="Fencer.cs" />
+    <Compile Include="GetWebcamImageWindow.xaml.cs">
+      <DependentUpon>GetWebcamImageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InkInputHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

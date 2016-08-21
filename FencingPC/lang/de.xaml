@@ -5,6 +5,7 @@
 
     <!-- Titles -->
     <sys:String x:Key="str_Title_Main">Fechten</sys:String>
+    <sys:String x:Key="str_Title_Webcam">Webcam</sys:String>
     
     <!-- Headers -->
     <sys:String x:Key="str_Header_Members">Mitglieder</sys:String>
@@ -44,6 +45,8 @@
     <sys:String x:Key="str_Button_Refresh">Aktualisieren</sys:String>
     <sys:String x:Key="str_Button_Apply">Anwenden</sys:String>
     <sys:String x:Key="str_Button_RestartTournament">Turnier neu starten</sys:String>
+
+    <sys:String x:Key="str_Button_TakePicture">Foto aufnehmen</sys:String>
     
     <sys:String x:Key="str_Button_OK">OK</sys:String>
     <sys:String x:Key="str_Button_Cancel">Abbrechen</sys:String>

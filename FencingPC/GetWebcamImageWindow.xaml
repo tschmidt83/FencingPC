@@ -1,0 +1,25 @@
+﻿<Window x:Class="FencingPC.GetWebcamImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FencingPC"
+        mc:Ignorable="d"
+        Title="{DynamicResource str_Title_Webcam}" Height="400" Width="400" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Name="imgWebcamImage"/>
+        <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="1" Grid.Column="0" Content="{DynamicResource str_Button_TakePicture}" Name="btnFoto" Click="btnFoto_Click"/>
+        <TextBlock Style="{StaticResource VersusTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="---" Name="tbCountdown"/>
+        <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="2" Grid.Column="0" Content="{DynamicResource str_Button_OK}" Name="btnOK" Click="btnOK_Click"/>
+        <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="2" Grid.Column="1" Content="{DynamicResource str_Button_Cancel}" Name="btnCancel" Click="btnCancel_Click"/>
+    </Grid>
+</Window>

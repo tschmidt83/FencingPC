@@ -200,17 +200,72 @@ namespace FencingPC
 
         private void btnDeleteFencer_Click(object sender, RoutedEventArgs e)
         {
+            if (SelectedFencer != null)
+            {
+                Roster.Remove(SelectedFencer);
 
+                ClearTextBoxes();
+                EditMode = EditModeType.None;
+                grdFencerData.IsEnabled = false;
+                pnlRoster.IsEnabled = true;
+                imgFencerImage.Source = null;
+                SelectedFencer = null;
+                SaveRoster();
+            }
         }
 
         private void btnFencerImage_Webcam_Click(object sender, RoutedEventArgs e)
         {
+            if (SelectedFencer != null)
+            {
+                GetWebcamImageWindow w = new GetWebcamImageWindow();
 
+                bool? result = w.ShowDialog();
+                if (result == true)
+                {
+                    // Determine file name
+                    string FileName = String.Format("{0:yyyy-MM-dd_HH-mm-ss}.png", DateTime.Now);
+                    if (!System.IO.Directory.Exists(ProjectDir + @"\images"))
+                    {
+                        System.IO.Directory.CreateDirectory(ProjectDir + @"\images");
+                    }
+
+                    BitmapSource bmp = w.LastImage;
+
+                    string imgPath = ProjectDir + @"\images\" + FileName;
+
+                    using (System.IO.FileStream fs = new System.IO.FileStream(imgPath, System.IO.FileMode.Create))
+                    {
+                        PngBitmapEncoder enc = new PngBitmapEncoder();
+                        enc.Frames.Add(BitmapFrame.Create(bmp));
+                        enc.Save(fs);
+                    }
+
+                    SelectedFencer.ImageName = FileName;
+                    SetFencerImage(FileName);
+                }
+            }
         }
 
         private void btnFencerImage_Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (SelectedFencer != null)
+            {
+                if (!string.IsNullOrEmpty(SelectedFencer.ImageName))
+                {
+                    if (System.IO.File.Exists(ProjectDir + @"\images\" + SelectedFencer.ImageName))
+                    {
+                        try
+                        {
+                            imgFencerImage.Source = null;
+                            System.IO.File.Delete(ProjectDir + @"\images\" + SelectedFencer.ImageName);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
         }
 
         private void btnFencerOK_Click(object sender, RoutedEventArgs e)
