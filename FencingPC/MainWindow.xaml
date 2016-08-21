@@ -25,13 +25,13 @@
                     <!-- Roster and control buttons -->
                     <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Delete}" Name="btnDeleteFencer" Click="btnDeleteFencer_Click"/>
                     <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Edit}" Name="btnEditFencer" Click="btnEditFencer_Click"/>
-                    <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_New}" Name="btnNewFencer" Click="btnNewFencer_Click"/>   
-                    
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_New}" Name="btnNewFencer" Click="btnNewFencer_Click"/>
+
                     <ListBox DockPanel.Dock="Top" Style="{StaticResource StandardListBoxStyle}" Name="lbRoster"/>
                 </DockPanel>
-                
+
                 <!-- Controls for editing a dataset -->
-                <Grid Grid.Row="0" Grid.Column="0" Name="grdFencerData" IsEnabled="True">
+                <Grid Grid.Row="0" Grid.Column="0" Name="grdFencerData" IsEnabled="{Binding EditModeEnabled}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -57,7 +57,7 @@
                     <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="{DynamicResource str_Header_Gender}"/>
                     <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="2" Grid.Column="1" Name="cbFencerGender"/>
 
-                        <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="{DynamicResource str_Header_Birthdate}"/>
+                    <TextBlock Style="{StaticResource LeadTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="{DynamicResource str_Header_Birthdate}"/>
                     <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                         <TextBox Style="{StaticResource StandardTextBoxStyle}" Width="50" Name="tbFencerBirthDay"/>
                         <TextBlock Style="{StaticResource StandardTextBlockStyle}" Text="."/>
@@ -84,6 +84,44 @@
                     <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="7" Grid.Column="1" Content="{DynamicResource str_Button_OK}" Name="btnFencerOK" Click="btnFencerOK_Click"/>
                     <Button Style="{StaticResource StandardButtonStyle}" Grid.Row="8" Grid.Column="1" Content="{DynamicResource str_Button_OK}" VerticalAlignment="Top" Name="btnFencerCancel" Click="btnFencerCancel_Click"/>
                 </Grid>
+            </Grid>
+        </TabItem>
+        
+        <!-- Application settings -->
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Settings}"/>
+            </TabItem.Header>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LeadTextBlockStyle}" Text="{DynamicResource str_Header_MainScreen}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource StandardComboBoxStyle}" Name="cbSettings_MainScreen"/>
+
+                <CheckBox Grid.Row="1" Grid.Column="1" Name="cbEnableResultScreen" Content="{DynamicResource str_Header_EnableResultScreen}" Style="{StaticResource StandardCheckBoxStyle}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LeadTextBlockStyle}" Text="{DynamicResource str_Header_ResultScreen}"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandardComboBoxStyle}" Name="cbSettings_ResultScreen" IsEnabled="{Binding ElementName=cbEnableResultScreen, Path=IsChecked}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LeadTextBlockStyle}" Text="{DynamicResource str_Header_Webcam}"/>
+                <ComboBox Grid.Row="3" Grid.Column="1" Style="{StaticResource StandardComboBoxStyle}" Name="cbSettings_WebcamSelect"/>
+
+                <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Refresh}" Name="btnSettings_Refresh" Click="btnSettings_Refresh_Click"/>
+                <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Apply}" Name="btnSettings_Apply" Click="btnSettings_Apply_Click"/>
+
+                <Button Grid.Row="5" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_RestartTournament}" Name="btnRestartTournament" Click="btnRestartTournament_Click"/>
             </Grid>
         </TabItem>
     </TabControl>

@@ -8,13 +8,19 @@
     
     <!-- Headers -->
     <sys:String x:Key="str_Header_Members">Mitglieder</sys:String>
-    
+    <sys:String x:Key="str_Header_Settings">Einstellungen</sys:String>
+
     <sys:String x:Key="str_Header_FirstName">Vorname:</sys:String>
     <sys:String x:Key="str_Header_LastName">Nachname:</sys:String>
     <sys:String x:Key="str_Header_Gender">Geschlecht:</sys:String>
     <sys:String x:Key="str_Header_Birthdate">Geburtsdatum:</sys:String>
     <sys:String x:Key="str_Header_Membership">Status:</sys:String>
     <sys:String x:Key="str_Header_ID">ID:</sys:String>
+
+    <sys:String x:Key="str_Header_MainScreen">Primärer Bildschirm:</sys:String>
+    <sys:String x:Key="str_Header_EnableResultScreen">Ergebnisbildschirm verwenden</sys:String>
+    <sys:String x:Key="str_Header_ResultScreen">Ergebnisbildschirm:</sys:String>
+    <sys:String x:Key="str_Header_Webcam">Webcam:</sys:String>
 
     <!-- Regular strings -->
     <sys:String x:Key="str_Gender_Male">Männlich</sys:String>
@@ -32,6 +38,10 @@
     <sys:String x:Key="str_Button_ImageFile">Bild aus Datei</sys:String>
     <sys:String x:Key="str_Button_ImageDelete">Bild löschen</sys:String>
 
+    <sys:String x:Key="str_Button_Refresh">Aktualisieren</sys:String>
+    <sys:String x:Key="str_Button_Apply">Anwenden</sys:String>
+    <sys:String x:Key="str_Button_RestartTournament">Turnier neu starten</sys:String>
+    
     <sys:String x:Key="str_Button_OK">OK</sys:String>
     <sys:String x:Key="str_Button_Cancel">Abbrechen</sys:String>
     
