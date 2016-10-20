@@ -447,7 +447,32 @@ namespace FencingPC
         private void StartTournament()
         {
 #if DEBUG
+            Random r = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                int f1 = 0;
+                int f2 = 0;
+                do
+                {
+                    f1 = r.Next(Roster.Count);
+                    f2 = r.Next(Roster.Count);
+                }
+                while (f1 == f2);
 
+                int s1 = 0;
+                int s2 = 0;
+                do
+                {
+                    s1 = r.Next(6);
+                    s2 = r.Next(6);
+                }
+                while (s1 == s2);
+
+                if(f1 != f2 && s1 != s2)
+                {
+                    CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2);
+                }
+            }
 #endif
         }
 
