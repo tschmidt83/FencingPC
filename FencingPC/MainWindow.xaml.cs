@@ -310,15 +310,14 @@ namespace FencingPC
             {
                 if (EditMode == EditModeType.Create)
                 {
-                    Fencer f = new Fencer();
-                    f.FirstName = firstName;
-                    f.LastName = lastName;
-                    f.Gender = gender;
-                    f.BirthDate = new DateTime(birthYear, birthMonth, birthDay);
-                    f.Membership = membership;
-                    f.RosterID = rosterID;
-                    Roster.Add(f);
+                    SelectedFencer.FirstName = firstName;
+                    SelectedFencer.LastName = lastName;
+                    SelectedFencer.Gender = gender;
+                    SelectedFencer.BirthDate = new DateTime(birthYear, birthMonth, birthDay);
+                    SelectedFencer.Membership = membership;
                     SaveRoster();
+                    lbRoster.ItemsSource = null;
+                    lbRoster.ItemsSource = Roster;
                 }
                 else if (EditMode == EditModeType.Edit)
                 {
@@ -447,6 +446,9 @@ namespace FencingPC
 
         private void StartTournament()
         {
+#if DEBUG
+
+#endif
         }
 
         #region INotifyPropertyChanged members
