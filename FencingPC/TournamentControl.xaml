@@ -22,7 +22,7 @@
                 <Grid Name="grdTableaux"/>
             </ScrollViewer>
 
-            <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Name="scrResults" ScrollChanged="scrTableaux_ScrollChanged">
+            <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrResults" ScrollChanged="scrTableaux_ScrollChanged">
                 <Grid Name="grdResults">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

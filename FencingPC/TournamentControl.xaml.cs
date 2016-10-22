@@ -50,12 +50,12 @@ namespace FencingPC
 
             if (!FencersInTournament.Contains(f1))
             {
-                f1.TournamentID = FencersInTournament.Count;
+                f1.TournamentID = FencersInTournament.Count + 1;
                 FencersInTournament.Add(f1);
             }
             if (!FencersInTournament.Contains(f2))
             {
-                f2.TournamentID = FencersInTournament.Count;
+                f2.TournamentID = FencersInTournament.Count + 1;
                 FencersInTournament.Add(f2);
             }
 
@@ -103,7 +103,7 @@ namespace FencingPC
             grdTableaux.RowDefinitions.Clear();
 
             // Header row
-            grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100, GridUnitType.Pixel) });
 
             // Create first column and top row: names
             grdTableaux.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
@@ -111,14 +111,14 @@ namespace FencingPC
             {
                 // Column 0
                 grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                TextBlock tb_left = new TextBlock() { Text = FencersInTournament[i].DisplayName, Style = Application.Current.Resources["TableauxHeaderStyle"] as Style };
+                TextBlock tb_left = new TextBlock() { Text = FencersInTournament[i].TournamentID.ToString() + ": " + FencersInTournament[i].DisplayName, Style = Application.Current.Resources["TableauxHeaderStyle"] as Style };
                 Grid.SetRow(tb_left, i + 1);
                 Grid.SetColumn(tb_left, 0);
                 grdTableaux.Children.Add(tb_left);
 
                 // Row 0
                 grdTableaux.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                TextBlock tb_top = new TextBlock() { Text = FencersInTournament[i].DisplayName, Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style };
+                TextBlock tb_top = new TextBlock() { Text = FencersInTournament[i].TournamentID.ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style };
                 Grid.SetRow(tb_top, 0);
                 Grid.SetColumn(tb_top, i + 1);
                 grdTableaux.Children.Add(tb_top);
@@ -137,8 +137,8 @@ namespace FencingPC
                     for (int m = 0; m < b.Count; m++)
                     {
                         TextBlock res1 = new TextBlock() { Text = b[m].Score1.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style };
-                        Grid.SetRow(res1, b[m].Fencer1.TournamentID + 1);
-                        Grid.SetColumn(res1, b[m].Fencer2.TournamentID + 1);
+                        Grid.SetRow(res1, b[m].Fencer1.TournamentID);
+                        Grid.SetColumn(res1, b[m].Fencer2.TournamentID);
                         grdTableaux.Children.Add(res1);
                     }
                 }
@@ -154,29 +154,28 @@ namespace FencingPC
             grdResults.Children.Clear();
             grdResults.RowDefinitions.Clear();
 
-            grdResults.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Victories"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 0);
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_1"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 1);
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsGiven"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 2);
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsTaken"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 3);
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_2"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 4);
-            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Rank"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 5);
+            grdResults.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100, GridUnitType.Pixel) });
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Victories"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 0);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_1"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 1);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsGiven"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 2);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsTaken"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 3);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_2"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 4);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Rank"].ToString(), Style = Application.Current.Resources["ResultsTopHeaderStyle"] as Style }, 0, 5);
 
             for (int i = 0; i < FencersInTournament.Count; i++)
             {
                 int current_ID = FencersInTournament[i].TournamentID;
-                int currentRow = current_ID + 1;
 
                 try
                 {
                     ResultInfo r = FencerResults[current_ID];
                     grdResults.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                    AddToResultGrid(new TextBlock() { Text = r.Wins.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 0);
-                    AddToResultGrid(new TextBlock() { Text = r.WinRatio.ToString("0.0"), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 1);
-                    AddToResultGrid(new TextBlock() { Text = r.HitsGiven.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 2);
-                    AddToResultGrid(new TextBlock() { Text = r.HitsTaken.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 3);
-                    AddToResultGrid(new TextBlock() { Text = r.HitIndex.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 4);
-                    AddToResultGrid(new TextBlock() { Text = r.Rank.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 5);
+                    AddToResultGrid(new TextBlock() { Text = r.Wins.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 0);
+                    AddToResultGrid(new TextBlock() { Text = r.WinRatio.ToString("0.0"), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 1);
+                    AddToResultGrid(new TextBlock() { Text = r.HitsGiven.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 2);
+                    AddToResultGrid(new TextBlock() { Text = r.HitsTaken.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 3);
+                    AddToResultGrid(new TextBlock() { Text = r.HitIndex.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 4);
+                    AddToResultGrid(new TextBlock() { Text = r.Rank.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 5);
                 }
                 catch
                 {
