@@ -9,6 +9,15 @@ namespace FencingPC
 {
     public class ResultInfo : INotifyPropertyChanged
     {
+        /*** FencerID ***/
+        private int m_FencerID;
+
+        public int FencerID
+        {
+            get { return m_FencerID; }
+            set { m_FencerID = value; NotifyPropertyChanged("FencerID"); }
+        }        
+
         /*** HitsGiven ***/
         private int m_HitsGiven = 0;
 
@@ -74,6 +83,11 @@ namespace FencingPC
 
         public ResultInfo()
         {            
+        }
+
+        public ResultInfo(int id)
+        {
+            m_FencerID = id;
         }
 
         /// <summary>

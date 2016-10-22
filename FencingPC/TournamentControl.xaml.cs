@@ -51,7 +51,7 @@ namespace FencingPC
             if (!FencersInTournament.Contains(f1))
             {
                 f1.TournamentID = FencersInTournament.Count;
-                FencersInTournament.Add(f1);                
+                FencersInTournament.Add(f1);
             }
             if (!FencersInTournament.Contains(f2))
             {
@@ -59,13 +59,38 @@ namespace FencingPC
                 FencersInTournament.Add(f2);
             }
 
+            BattleInfo b1 = new BattleInfo(f1, score1, f2, score2);
+            BattleInfo b2 = new BattleInfo(f2, score2, f1, score1);
+
             if (!BattleCollection.ContainsKey(f1.TournamentID))
                 BattleCollection.Add(f1.TournamentID, new List<BattleInfo>());
-            if(!BattleCollection.ContainsKey(f2.TournamentID))
+            if (!BattleCollection.ContainsKey(f2.TournamentID))
                 BattleCollection.Add(f2.TournamentID, new List<BattleInfo>());
 
-            BattleCollection[f1.TournamentID].Add(new BattleInfo(f1, score1, f2, score2));
-            BattleCollection[f2.TournamentID].Add(new BattleInfo(f2, score2, f1, score1));
+            BattleCollection[f1.TournamentID].Add(b1);
+            BattleCollection[f2.TournamentID].Add(b2);
+
+            // Ranking
+            #region Ranking
+            // Process hits/wins/losses
+            if (!FencerResults.ContainsKey(f1.TournamentID))
+                FencerResults.Add(f1.TournamentID, new ResultInfo(f1.TournamentID));
+            if (!FencerResults.ContainsKey(f2.TournamentID))
+                FencerResults.Add(f2.TournamentID, new ResultInfo(f2.TournamentID));
+
+            FencerResults[f1.TournamentID].Refresh(b1);
+            FencerResults[f2.TournamentID].Refresh(b2);
+
+            // First criterion: sort by wins (descending), index 1 (descending), index 2 (descending)
+            IComparer<KeyValuePair<int, ResultInfo>> comparer = new RangingOrderClass();
+            List<KeyValuePair<int, ResultInfo>> ranking = FencerResults.ToList();
+            ranking.Sort(comparer);
+
+            for (int i = 0; i < ranking.Count; i++)
+            {
+                FencerResults[ranking[i].Key].Rank = i + 1;
+            }
+            #endregion
 
             RefreshDisplay();
         }
@@ -99,7 +124,8 @@ namespace FencingPC
                 grdTableaux.Children.Add(tb_top);
             }
 
-            // Process battles
+            // Display battles
+            #region Process battles
             for (int i = 0; i < FencersInTournament.Count; i++)
             {
                 int current_ID = FencersInTournament[i].TournamentID;
@@ -114,12 +140,6 @@ namespace FencingPC
                         Grid.SetRow(res1, b[m].Fencer1.TournamentID + 1);
                         Grid.SetColumn(res1, b[m].Fencer2.TournamentID + 1);
                         grdTableaux.Children.Add(res1);
-
-                        // Process hits/wins/losses
-                        if (!FencerResults.ContainsKey(current_ID))
-                            FencerResults.Add(current_ID, new ResultInfo());
-
-                        FencerResults[current_ID].Refresh(b[m]);
                     }
                 }
                 else
@@ -127,8 +147,10 @@ namespace FencingPC
                     throw new Exception("Error: no battles with ID " + current_ID.ToString());
                 }
             }
+            #endregion
 
             // Display results
+            #region Display results            
             grdResults.Children.Clear();
             grdResults.RowDefinitions.Clear();
 
@@ -139,12 +161,11 @@ namespace FencingPC
             AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsTaken"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 3);
             AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_2"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 4);
             AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Rank"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 5);
-            int currentRow = 0;
 
             for (int i = 0; i < FencersInTournament.Count; i++)
             {
                 int current_ID = FencersInTournament[i].TournamentID;
-                currentRow++;
+                int currentRow = current_ID + 1;
 
                 try
                 {
@@ -162,6 +183,7 @@ namespace FencingPC
                     throw new Exception("Error: no results with ID " + current_ID.ToString());
                 }
             }
+            #endregion
         }
 
         private void AddToResultGrid(UIElement child, int row, int col)
@@ -169,6 +191,26 @@ namespace FencingPC
             Grid.SetRow(child, row);
             Grid.SetColumn(child, col);
             grdResults.Children.Add(child);
+        }
+    }
+
+    public class RangingOrderClass : IComparer<KeyValuePair<int, ResultInfo>>
+    {
+        public int Compare(KeyValuePair<int, ResultInfo> x, KeyValuePair<int, ResultInfo> y)
+        {
+            // Compare by wins, descending
+            int compareResult = y.Value.Wins.CompareTo(x.Value.Wins);
+            if (compareResult == 0)
+            {
+                // Compare by index 1, descending
+                compareResult = y.Value.WinRatio.CompareTo(x.Value.WinRatio);
+                if (compareResult == 0)
+                {
+                    // Compare by index 2, descending
+                    compareResult = y.Value.HitIndex.CompareTo(x.Value.HitIndex);
+                }
+            }
+            return compareResult;
         }
     }
 }
