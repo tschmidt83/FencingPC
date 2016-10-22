@@ -63,6 +63,15 @@ namespace FencingPC
             set { m_HitIndex = value; NotifyPropertyChanged("HitIndex"); }
         }
 
+        /*** Rank ***/
+        private int m_Rank;
+
+        public int Rank
+        {
+            get { return m_Rank; }
+            set { m_Rank = value; NotifyPropertyChanged("Rank"); }
+        }
+
         public ResultInfo()
         {            
         }

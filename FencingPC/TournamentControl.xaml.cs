@@ -74,13 +74,15 @@ namespace FencingPC
         {
             // Clear old table
             grdTableaux.Children.Clear();
+            grdTableaux.ColumnDefinitions.Clear();
+            grdTableaux.RowDefinitions.Clear();
 
             // Header row
             grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
             // Create first column and top row: names
             grdTableaux.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-            for(int i = 0; i < FencersInTournament.Count; i++)
+            for (int i = 0; i < FencersInTournament.Count; i++)
             {
                 // Column 0
                 grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
@@ -122,9 +124,51 @@ namespace FencingPC
                 }
                 else
                 {
-                    throw new Exception("Error: no battles with ID " + FencersInTournament[i].TournamentID.ToString());
+                    throw new Exception("Error: no battles with ID " + current_ID.ToString());
                 }
             }
+
+            // Display results
+            grdResults.Children.Clear();
+            grdResults.RowDefinitions.Clear();
+
+            grdResults.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Victories"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 0);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_1"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 1);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsGiven"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 2);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_HitsTaken"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 3);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Index_2"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 4);
+            AddToResultGrid(new TextBlock() { Text = Application.Current.Resources["str_Rank"].ToString(), Style = Application.Current.Resources["TableauxTopHeaderStyle"] as Style }, 0, 5);
+            int currentRow = 0;
+
+            for (int i = 0; i < FencersInTournament.Count; i++)
+            {
+                int current_ID = FencersInTournament[i].TournamentID;
+                currentRow++;
+
+                try
+                {
+                    ResultInfo r = FencerResults[current_ID];
+                    grdResults.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    AddToResultGrid(new TextBlock() { Text = r.Wins.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 0);
+                    AddToResultGrid(new TextBlock() { Text = r.WinRatio.ToString("0.0"), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 1);
+                    AddToResultGrid(new TextBlock() { Text = r.HitsGiven.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 2);
+                    AddToResultGrid(new TextBlock() { Text = r.HitsTaken.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 3);
+                    AddToResultGrid(new TextBlock() { Text = r.HitIndex.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 4);
+                    AddToResultGrid(new TextBlock() { Text = r.Rank.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, currentRow, 5);
+                }
+                catch
+                {
+                    throw new Exception("Error: no results with ID " + current_ID.ToString());
+                }
+            }
+        }
+
+        private void AddToResultGrid(UIElement child, int row, int col)
+        {
+            Grid.SetRow(child, row);
+            Grid.SetColumn(child, col);
+            grdResults.Children.Add(child);
         }
     }
 }

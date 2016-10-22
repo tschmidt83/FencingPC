@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="240"/>
             </Grid.ColumnDefinitions>
 
             <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrTableaux" ScrollChanged="scrTableaux_ScrollChanged">
@@ -35,13 +35,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Victories}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Index_1}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_HitsGiven}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_HitsTaken}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Index_2}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="5" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Rank}"/>
                 </Grid>
             </ScrollViewer>
         </Grid>
