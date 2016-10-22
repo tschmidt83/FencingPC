@@ -5,20 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FencingPC"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="160"/>
-        </Grid.ColumnDefinitions>
+             d:DesignHeight="500" d:DesignWidth="700">
+    <DockPanel LastChildFill="True" Background="White">
+        <Button DockPanel.Dock="Top" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_EnterBattle}"/>
+        
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="160"/>
+            </Grid.ColumnDefinitions>
 
-        <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrTableaux" ScrollChanged="scrTableaux_ScrollChanged">
-            <Grid Name="grdTableaux"/>
-        </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrTableaux" ScrollChanged="scrTableaux_ScrollChanged">
+                <Grid Name="grdTableaux"/>
+            </ScrollViewer>
 
-        <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Name="scrResults" ScrollChanged="scrTableaux_ScrollChanged"></ScrollViewer>
-    </Grid>
+            <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Name="scrResults" ScrollChanged="scrTableaux_ScrollChanged">
+                <Grid Name="grdResults">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Victories}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Index_1}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_HitsGiven}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_HitsTaken}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Index_2}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="5" Style="{StaticResource TableauxTopHeaderStyle}" Text="{DynamicResource str_Rank}"/>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
 </UserControl>

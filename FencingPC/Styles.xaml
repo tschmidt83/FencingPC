@@ -61,9 +61,9 @@
 
     <Style x:Key="TableauxTopHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource TableauxHeaderStyle}">
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="RenderTransform">
+        <Setter Property="LayoutTransform">
             <Setter.Value>
-                <RotateTransform Angle="0"/>
+                <RotateTransform Angle="-90"/>
             </Setter.Value>
         </Setter>
     </Style>

@@ -35,6 +35,13 @@
     <sys:String x:Key="str_FirstName">Vorname</sys:String>
     <sys:String x:Key="str_LastName">Nachname</sys:String>
 
+    <sys:String x:Key="str_Victories">Siege</sys:String>
+    <sys:String x:Key="str_Index_1">Index 1</sys:String>
+    <sys:String x:Key="str_HitsGiven">Treffer geg.</sys:String>
+    <sys:String x:Key="str_HitsTaken">Treffer erh.</sys:String>
+    <sys:String x:Key="str_Index_2">Index 2</sys:String>
+    <sys:String x:Key="str_Rank">Platz</sys:String>
+
     <!-- Button captions -->
     <sys:String x:Key="str_Button_Edit">Bearbeiten</sys:String>
     <sys:String x:Key="str_Button_New">Neu</sys:String>
@@ -51,5 +58,7 @@
     
     <sys:String x:Key="str_Button_OK">OK</sys:String>
     <sys:String x:Key="str_Button_Cancel">Abbrechen</sys:String>
+
+    <sys:String x:Key="str_Button_EnterBattle">Gefecht eintragen</sys:String>
     
 </ResourceDictionary>
