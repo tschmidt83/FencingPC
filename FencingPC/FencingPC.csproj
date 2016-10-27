@@ -74,6 +74,9 @@
     <Compile Include="PlusMinusControl.xaml.cs">
       <DependentUpon>PlusMinusControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PoolEntryDisplay.xaml.cs">
+      <DependentUpon>PoolEntryDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResultInfo.cs" />
     <Compile Include="SingleBattleWindow.xaml.cs">
       <DependentUpon>SingleBattleWindow.xaml</DependentUpon>
@@ -114,6 +117,10 @@
     <Page Include="PlusMinusControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PoolEntryDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SingleBattleWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

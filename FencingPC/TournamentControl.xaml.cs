@@ -91,7 +91,11 @@ namespace FencingPC
                 }
             }
 
-            // Recalculate Rankings
+            // Clear fencers' results
+            FencerResults[f1.TournamentID].ClearResult();
+            FencerResults[f2.TournamentID].ClearResult();
+
+            // Recalculate results
             for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
             {
                 BattleInfo bi = BattleCollection[f1.TournamentID][i];
@@ -215,10 +219,20 @@ namespace FencingPC
 
                     for (int m = 0; m < b.Count; m++)
                     {
+                        bool victory = b[m].Score1 > b[m].Score2 ? true : false;
+                        PoolEntryDisplay entry = new PoolEntryDisplay(b[m].Score1, victory, b[m].Fencer1.TournamentID - 1, b[m].Fencer2.TournamentID - 1);
+                        entry.CallForEdit += PoolEntryDisplay_CallForEdit;
+                        Grid.SetRow(entry, b[m].Fencer1.TournamentID);
+                        Grid.SetColumn(entry, b[m].Fencer2.TournamentID);
+                        grdTableaux.Children.Add(entry);
+                        entry.Refresh();
+
+                        /*
                         TextBlock res1 = new TextBlock() { Text = b[m].Score1.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style };
                         Grid.SetRow(res1, b[m].Fencer1.TournamentID);
                         Grid.SetColumn(res1, b[m].Fencer2.TournamentID);
                         grdTableaux.Children.Add(res1);
+                        */
                     }
                 }
                 else
@@ -262,6 +276,46 @@ namespace FencingPC
                 }
             }
             #endregion
+        }
+
+        private void PoolEntryDisplay_CallForEdit(object sender, EventArgs e)
+        {
+            PoolEntryDisplay pe = sender as PoolEntryDisplay;
+            if (pe != null)
+            {
+                int scoreRow = pe.ScoreRow;
+                int scoreCol = pe.ScoreCol;
+
+                if (scoreRow >= FencersInTournament.Count || scoreCol >= FencersInTournament.Count)
+                    return;
+
+                Fencer f1 = FencersInTournament[scoreRow];
+                Fencer f2 = FencersInTournament[scoreCol];
+
+                int bscore1 = 0;
+                int bscore2 = 0;
+
+                // Edit battle
+                for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
+                {
+                    BattleInfo bi = BattleCollection[f1.TournamentID][i];
+                    if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
+                    {
+                        bscore1 = bi.Score1;
+                        bscore2 = bi.Score2;
+                    }
+                    else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
+                    {
+                        bscore1 = bi.Score2;
+                        bscore2 = bi.Score1;
+                    }
+                }
+
+                if (EnterBattleEvent != null)
+                {
+                    EnterBattleEvent(this, new BattleEventArgs(f1.RosterID, f2.RosterID, bscore1, bscore2));
+                }
+            }
         }
 
         private void AddToResultGrid(UIElement child, int row, int col)

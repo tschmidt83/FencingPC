@@ -99,6 +99,8 @@ namespace FencingPC
 
             pmScore1.ScoreValue = score1;
             pmScore2.ScoreValue = score2;
+
+            m_EditMode = true;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
