@@ -1,0 +1,45 @@
+﻿<Window x:Class="FencingPC.SingleBattleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FencingPC"
+        mc:Ignorable="d"
+        Title="Gefecht eintragen" Height="400" Width="400" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Fencer Pictures -->
+        <Image Margin="2" Grid.Row="0" Grid.Column="0" Name="imgFencer1"/>
+        <Image Margin="2" Grid.Row="0" Grid.Column="2" Name="imgFencer2"/>
+
+        <!-- Fencer selection -->
+        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="0" Name="cbFencer1" SelectionChanged="cbFencer1_SelectionChanged"/>
+        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="2" Name="cbFencer2" SelectionChanged="cbFencer2_SelectionChanged"/>
+        <TextBlock Style="{StaticResource VersusTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="vs"/>
+
+        <!-- Scores -->
+        <local:PlusMinusControl Grid.Row="2" Grid.Column="0" x:Name="pmScore1"/>
+        <local:PlusMinusControl Grid.Row="2" Grid.Column="2" x:Name="pmScore2"/>
+        <!--TextBox Style="{StaticResource ScoreTextBoxStyle}" Grid.Row="2" Grid.Column="0" Name="tbScore1" Text="0"/-->
+        <!--TextBox Style="{StaticResource ScoreTextBoxStyle}" Grid.Row="2" Grid.Column="2" Name="tbScore2" Text="0"/-->
+        <TextBlock Style="{StaticResource VersusTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text=":"/>
+
+        <!-- Buttons -->
+        <Button Grid.Row="4" Grid.Column="0" Content="OK" Name="btnOK" Style="{StaticResource StandardButtonStyle}" Click="btnOK_Click"/>
+        <Button Grid.Row="4" Grid.Column="2" Content="Abbruch" Name="btnCancel" Style="{StaticResource StandardButtonStyle}" Click="btnCancel_Click"/>
+        <Button Grid.Row="5" Grid.Column="0" Content="Löschen" Name="btnDelete" Style="{StaticResource StandardButtonStyle}" Click="btnDelete_Click"/>
+    </Grid>
+</Window>

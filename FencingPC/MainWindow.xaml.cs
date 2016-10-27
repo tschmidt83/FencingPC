@@ -441,7 +441,38 @@ namespace FencingPC
             }
             */
 
+            // Register Events
+            CtrTournament.EnterBattleEvent += CtrTournament_EnterBattleEvent;
+
+            // Start Tournament
             StartTournament();
+        }
+
+        private void CtrTournament_EnterBattleEvent(object sender, EventArgs e)
+        {
+            SingleBattleWindow w = new SingleBattleWindow();
+            w.InitializeRoster(Roster);
+            if (e != null)
+            {
+                // Edit Battle
+                BattleEventArgs be = e as BattleEventArgs;
+                if (be != null)
+                {
+                    w.SetBattle(be.ID1, be.ID2, be.Score1, be.Score2);
+                }
+            }
+            bool? result = w.ShowDialog();
+            if (result == true)
+            {
+                if (w.EditMode)
+                {
+                    CtrTournament.EditBattle(w.Battle_Fencer1, w.Battle_Score1, w.Battle_Fencer2, w.Battle_Score2, true);
+                }
+                else
+                {
+                    CtrTournament.AddBattle(w.Battle_Fencer1, w.Battle_Score1, w.Battle_Fencer2, w.Battle_Score2, true);
+                }
+            }
         }
 
         private void StartTournament()
@@ -470,7 +501,7 @@ namespace FencingPC
 
                 if(f1 != f2 && s1 != s2)
                 {
-                    CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2);
+                    CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2, true);
                 }
             }
 #endif

@@ -90,6 +90,17 @@ namespace FencingPC
             m_FencerID = id;
         }
 
+        public void ClearResult()
+        {
+            m_HitsGiven = 0;
+            m_HitsTaken = 0;
+            m_NumberOfBattles = 0;
+            m_Wins = 0;
+            m_WinRatio = 0;
+            m_HitIndex = 0;
+            m_Rank = 0;
+        }
+
         /// <summary>
         /// Recalculate all values based on new battle info
         /// </summary>

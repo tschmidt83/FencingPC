@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700">
     <DockPanel LastChildFill="True" Background="White">
-        <Button DockPanel.Dock="Top" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_EnterBattle}"/>
+        <Button DockPanel.Dock="Top" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_EnterBattle}" Name="btnEnterBattle" Click="btnEnterBattle_Click"/>
         
         <Grid DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>
