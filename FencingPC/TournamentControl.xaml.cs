@@ -66,13 +66,33 @@ namespace FencingPC
                 BattleInfo bi = BattleCollection[f1.TournamentID][i];
                 if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
                 {
-                    bi.Score1 = score1;
-                    bi.Score2 = score2;
+                    // Check if battle should be removed
+                    if (score1 == 0 && score2 == 0)
+                    {
+                        BattleCollection[f1.TournamentID].RemoveAt(i);
+                        break;
+                    }
+                    else
+                    {
+                        bi.Score1 = score1;
+                        bi.Score2 = score2;
+                        break;
+                    }
                 }
                 else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
                 {
-                    bi.Score1 = score2;
-                    bi.Score2 = score1;
+                    // Check if battle should be removed
+                    if (score1 == 0 && score2 == 0)
+                    {
+                        BattleCollection[f1.TournamentID].RemoveAt(i);
+                        break;
+                    }
+                    else
+                    {
+                        bi.Score1 = score2;
+                        bi.Score2 = score1;
+                        break;
+                    }
                 }
             }
 
@@ -81,17 +101,36 @@ namespace FencingPC
                 BattleInfo bi = BattleCollection[f2.TournamentID][i];
                 if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
                 {
-                    bi.Score1 = score1;
-                    bi.Score2 = score2;
+                    // Check if battle should be removed
+                    if (score1 == 0 && score2 == 0)
+                    {
+                        BattleCollection[f2.TournamentID].RemoveAt(i);
+                        break;
+                    }
+                    else
+                    {
+                        bi.Score1 = score1;
+                        bi.Score2 = score2;
+                        break;
+                    }
                 }
                 else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
                 {
-                    bi.Score1 = score2;
-                    bi.Score2 = score1;
+                    // Check if battle should be removed
+                    if (score1 == 0 && score2 == 0)
+                    {
+                        BattleCollection[f2.TournamentID].RemoveAt(i);
+                        break;
+                    }
+                    else
+                    {
+                        bi.Score1 = score2;
+                        bi.Score2 = score1;
+                        break;
+                    }
                 }
             }
 
-            // Clear fencers' results
             FencerResults[f1.TournamentID].ClearResult();
             FencerResults[f2.TournamentID].ClearResult();
 
@@ -140,9 +179,6 @@ namespace FencingPC
                     battleExists = true;
                 if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
                     battleExists = true;
-
-                if (battleExists)
-                    break;
             }
 
             if (!battleExists)
