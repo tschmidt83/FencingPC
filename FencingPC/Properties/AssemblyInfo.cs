@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("FencingPC")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ts.software")]
 [assembly: AssemblyProduct("FencingPC")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

@@ -62,7 +62,7 @@ namespace FencingPC
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
                 using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\roster.xml", System.IO.FileMode.Open))
-                    {
+                {
                     Roster = (ObservableCollection<Fencer>)serializer.Deserialize(fs);
                 }
             }
@@ -475,36 +475,78 @@ namespace FencingPC
             }
         }
 
-        private void StartTournament()
+        private Fencer GetFencerByID(int rosterID)
         {
-#if DEBUG
-            Random r = new Random();
-            for (int i = 0; i < 10; i++)
+            Fencer f = null;
+
+            for(int i = 0; i < Roster.Count; i++)
             {
-                int f1 = 0;
-                int f2 = 0;
-                do
+                if(Roster[i].RosterID == rosterID)
                 {
-                    f1 = r.Next(Roster.Count);
-                    f2 = r.Next(Roster.Count);
-                }
-                while (f1 == f2);
-
-                int s1 = 0;
-                int s2 = 0;
-                do
-                {
-                    s1 = r.Next(6);
-                    s2 = r.Next(6);
-                }
-                while (s1 == s2);
-
-                if(f1 != f2 && s1 != s2)
-                {
-                    CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2, true);
+                    f = Roster[i];
+                    break;
                 }
             }
+
+            return f;
+        }
+
+        private void StartTournament()
+        {
+            // Check for backup file
+            if (System.IO.File.Exists(ProjectDir + @"\backup.xml"))
+            {
+                List<BattleInfo> backup_battles = null;
+
+                // Get battles from backup file
+                XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
+                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Open))
+                {
+                    backup_battles = (List<BattleInfo>)serializer.Deserialize(fs);
+                }
+
+                if (backup_battles != null)
+                {
+                    for(int i = 0; i < backup_battles.Count; i++)
+                    {
+                        BattleInfo bi = backup_battles[i];
+                        Fencer f;
+                        CtrTournament.AddBattle(GetFencerByID(bi.Fencer1.RosterID), bi.Score1, GetFencerByID(bi.Fencer2.RosterID), bi.Score2, false);
+                    }
+                }
+            }
+            else
+            {
+
+#if DEBUG
+                Random r = new Random();
+                for (int i = 0; i < 10; i++)
+                {
+                    int f1 = 0;
+                    int f2 = 0;
+                    do
+                    {
+                        f1 = r.Next(Roster.Count);
+                        f2 = r.Next(Roster.Count);
+                    }
+                    while (f1 == f2);
+
+                    int s1 = 0;
+                    int s2 = 0;
+                    do
+                    {
+                        s1 = r.Next(6);
+                        s2 = r.Next(6);
+                    }
+                    while (s1 == s2);
+
+                    if (f1 != f2 && s1 != s2)
+                    {
+                        CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2, true);
+                    }
+                }
 #endif
+            }
         }
 
         #region INotifyPropertyChanged members
@@ -523,7 +565,7 @@ namespace FencingPC
 
         private void btnRestartTournament_Click(object sender, RoutedEventArgs e)
         {
-
+            CtrTournament.ResetTournament();
         }
 
         private void btnSettings_Apply_Click(object sender, RoutedEventArgs e)

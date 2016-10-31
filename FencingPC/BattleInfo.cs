@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Xml.Serialization;
+
 namespace FencingPC
 {
+    [Serializable]
     public class BattleInfo
     {
         private Fencer m_Fencer1;
@@ -38,6 +41,10 @@ namespace FencingPC
         {
             get { return m_Score2; }
             set { m_Score2 = value; }
+        }
+
+        public BattleInfo()
+        {
         }
 
         public BattleInfo(Fencer f1, int s1, Fencer f2, int s2)

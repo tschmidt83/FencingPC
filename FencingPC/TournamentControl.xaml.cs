@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Xml.Serialization;
+
 namespace FencingPC
 {
     /// <summary>
@@ -20,6 +22,9 @@ namespace FencingPC
     /// </summary>
     public partial class TournamentControl : UserControl
     {
+        // Directory of the executable
+        private string ProjectDir = string.Empty;
+
         private List<Fencer> FencersInTournament = new List<Fencer>();
 
         private Dictionary<int, ResultInfo> FencerResults = new Dictionary<int, ResultInfo>();
@@ -30,6 +35,8 @@ namespace FencingPC
 
         public TournamentControl()
         {
+            ProjectDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
             InitializeComponent();
         }
 
@@ -41,6 +48,10 @@ namespace FencingPC
             BattleList.Clear();
 
             // Remove backup file
+            if(System.IO.File.Exists(ProjectDir + @"\backup.xml"))
+            {
+                System.IO.File.Delete(ProjectDir + @"\backup.xml");
+            }
         }
 
         private int FindBattle(Fencer f1, Fencer f2)
@@ -95,6 +106,11 @@ namespace FencingPC
             if (modifyBackupFile)
             {
                 // Write new battle list to backup file
+                XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
+                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Create))
+                {
+                    serializer.Serialize(fs, BattleList);
+                }
             }
 
             // Recalculate all results
@@ -128,6 +144,11 @@ namespace FencingPC
             if(modifyBackupFile)
             {
                 // Write new battle list to backup file
+                XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
+                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Create))
+                {
+                    serializer.Serialize(fs, BattleList);
+                }
             }
 
             // Check if fencers are already in tournament list

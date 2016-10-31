@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FencingPC", "FencingPC.csproj", "{034A25DD-F548-41E1-9FF1-00FA0E8262CE}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupFencingPC", "..\SetupFencingPC\SetupFencingPC.vdproj", "{8725F610-D37C-42D6-BDF7-B7DF73E139ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,9 @@ Global
 		{034A25DD-F548-41E1-9FF1-00FA0E8262CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034A25DD-F548-41E1-9FF1-00FA0E8262CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{034A25DD-F548-41E1-9FF1-00FA0E8262CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8725F610-D37C-42D6-BDF7-B7DF73E139ED}.Debug|Any CPU.ActiveCfg = Debug
+		{8725F610-D37C-42D6-BDF7-B7DF73E139ED}.Release|Any CPU.ActiveCfg = Release
+		{8725F610-D37C-42D6-BDF7-B7DF73E139ED}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
