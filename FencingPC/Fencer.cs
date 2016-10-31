@@ -88,7 +88,7 @@ namespace FencingPC
         private int m_TournamentID;
 
         /// <summary>
-        /// Fencer's ID number in a tournament (will not be serialized)
+        /// Fencer's ID number in a tournament (will not be serialized); represents row and column in table
         /// </summary>
         [XmlIgnore]
         public int TournamentID

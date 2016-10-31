@@ -120,6 +120,21 @@ namespace FencingPC
             HitIndex = HitsGiven - HitsTaken;
         }
 
+        public void Refresh(int score1, int score2)
+        {
+            HitsGiven += score1;
+            HitsTaken += score2;
+
+            NumberOfBattles = NumberOfBattles + 1;
+
+            if (score1 > score2)
+                Wins = Wins + 1;
+
+            WinRatio = (double)Wins / NumberOfBattles;
+
+            HitIndex = HitsGiven - HitsTaken;
+        }
+
         #region INotifyPropertyChanged members
 
         public event PropertyChangedEventHandler PropertyChanged;

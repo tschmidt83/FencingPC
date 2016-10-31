@@ -20,16 +20,41 @@ namespace FencingPC
     /// </summary>
     public partial class TournamentControl : UserControl
     {
-        private Dictionary<int, List<BattleInfo>> BattleCollection = new Dictionary<int, List<BattleInfo>>();
         private List<Fencer> FencersInTournament = new List<Fencer>();
 
         private Dictionary<int, ResultInfo> FencerResults = new Dictionary<int, ResultInfo>();
 
         public event EventHandler EnterBattleEvent;
 
+        private List<BattleInfo> BattleList = new List<BattleInfo>();
+
         public TournamentControl()
         {
             InitializeComponent();
+        }
+
+        public void ResetTournament()
+        {
+            // Clear variables
+            FencersInTournament.Clear();
+            FencerResults = new Dictionary<int, ResultInfo>();
+            BattleList.Clear();
+
+            // Remove backup file
+        }
+
+        private int FindBattle(Fencer f1, Fencer f2)
+        {
+            int battleIndex = -1;
+
+            for(int i = 0; i < BattleList.Count; i++)
+            {
+                BattleInfo bi = BattleList[i];
+                if ((bi.Fencer1 == f1 && bi.Fencer2 == f2) || (bi.Fencer1 == f2 && bi.Fencer2 == f1))
+                    battleIndex = i;
+            }
+
+            return battleIndex;
         }
 
         private void scrTableaux_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -44,117 +69,68 @@ namespace FencingPC
             }
         }
 
-        public void EditBattle(Fencer f1, int score1, Fencer f2, int score2, bool modifyLockFile)
+        public void EditBattle(Fencer f1, int score1, Fencer f2, int score2, bool modifyBackupFile)
         {
-            if (!FencersInTournament.Contains(f1))
-                return;
-            if (!FencersInTournament.Contains(f2))
-                return;
-            if (!BattleCollection.ContainsKey(f1.TournamentID))
-                return;
-            if (!BattleCollection.ContainsKey(f2.TournamentID))
+            int idx = FindBattle(f1, f2);
+
+            if (idx == -1)
                 return;
 
-            if (!FencerResults.ContainsKey(f1.TournamentID))
-                return;
-            if (!FencerResults.ContainsKey(f2.TournamentID))
-                return;
+            BattleInfo bi = BattleList[idx];            
 
-            // Edit battle
-            for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
+            // Check if battle should be removed
+            if (score1 == 0 && score2 == 0)
             {
-                BattleInfo bi = BattleCollection[f1.TournamentID][i];
-                if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
-                {
-                    // Check if battle should be removed
-                    if (score1 == 0 && score2 == 0)
-                    {
-                        BattleCollection[f1.TournamentID].RemoveAt(i);
-                        break;
-                    }
-                    else
-                    {
-                        bi.Score1 = score1;
-                        bi.Score2 = score2;
-                        break;
-                    }
-                }
-                else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
-                {
-                    // Check if battle should be removed
-                    if (score1 == 0 && score2 == 0)
-                    {
-                        BattleCollection[f1.TournamentID].RemoveAt(i);
-                        break;
-                    }
-                    else
-                    {
-                        bi.Score1 = score2;
-                        bi.Score2 = score1;
-                        break;
-                    }
-                }
+                // Remove battle completely
+                BattleList.Remove(bi);
+            }
+            else
+            {
+                // Change battle result
+                BattleInfo bi_new = new BattleInfo(f1, score1, f2, score2);
+                BattleList.Remove(bi);
+                BattleList.Add(bi_new);
             }
 
-            for (int i = 0; i < BattleCollection[f2.TournamentID].Count; i++)
+            if (modifyBackupFile)
             {
-                BattleInfo bi = BattleCollection[f2.TournamentID][i];
-                if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
-                {
-                    // Check if battle should be removed
-                    if (score1 == 0 && score2 == 0)
-                    {
-                        BattleCollection[f2.TournamentID].RemoveAt(i);
-                        break;
-                    }
-                    else
-                    {
-                        bi.Score1 = score1;
-                        bi.Score2 = score2;
-                        break;
-                    }
-                }
-                else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
-                {
-                    // Check if battle should be removed
-                    if (score1 == 0 && score2 == 0)
-                    {
-                        BattleCollection[f2.TournamentID].RemoveAt(i);
-                        break;
-                    }
-                    else
-                    {
-                        bi.Score1 = score2;
-                        bi.Score2 = score1;
-                        break;
-                    }
-                }
+                // Write new battle list to backup file
             }
 
-            FencerResults[f1.TournamentID].ClearResult();
-            FencerResults[f2.TournamentID].ClearResult();
-
-            // Recalculate results
-            for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
+            // Recalculate all results
+            for (int i = 0; i < FencersInTournament.Count; i++)
             {
-                BattleInfo bi = BattleCollection[f1.TournamentID][i];
-                FencerResults[f1.TournamentID].Refresh(bi);
+                FencerResults[FencersInTournament[i].TournamentID].ClearResult();
             }
 
-            for (int i = 0; i < BattleCollection[f2.TournamentID].Count; i++)
+            for(int i = 0; i < BattleList.Count; i++)
             {
-                BattleInfo bi = BattleCollection[f2.TournamentID][i];
-                FencerResults[f2.TournamentID].Refresh(bi);
+                BattleInfo b_res = BattleList[i];
+                int idx1 = b_res.Fencer1.TournamentID;
+                int idx2 = b_res.Fencer2.TournamentID;
+
+                FencerResults[idx1].Refresh(b_res.Score1, b_res.Score2);
+                FencerResults[idx2].Refresh(b_res.Score2, b_res.Score1);
             }
 
             // Refresh Display
             RefreshDisplay();
         }
 
-        public void AddBattle(Fencer f1, int score1, Fencer f2, int score2, bool modifyLockFile)
+        public void AddBattle(Fencer f1, int score1, Fencer f2, int score2, bool modifyBackupFile)
         {
-            bool battleExists = false;
+            // Check if battle already exists
+            if (FindBattle(f1, f2) >= 0)
+                return;
 
+            BattleList.Add(new BattleInfo(f1, score1, f2, score2));
+            
+            if(modifyBackupFile)
+            {
+                // Write new battle list to backup file
+            }
+
+            // Check if fencers are already in tournament list
             if (!FencersInTournament.Contains(f1))
             {
                 f1.TournamentID = FencersInTournament.Count + 1;
@@ -166,51 +142,28 @@ namespace FencingPC
                 FencersInTournament.Add(f2);
             }
 
-            if (!BattleCollection.ContainsKey(f1.TournamentID))
-                BattleCollection.Add(f1.TournamentID, new List<BattleInfo>());
-            if (!BattleCollection.ContainsKey(f2.TournamentID))
-                BattleCollection.Add(f2.TournamentID, new List<BattleInfo>());
+            // Ranking
+            #region Ranking
+            // Process hits/wins/losses
+            if (!FencerResults.ContainsKey(f1.TournamentID))
+                FencerResults.Add(f1.TournamentID, new ResultInfo(f1.TournamentID));
+            if (!FencerResults.ContainsKey(f2.TournamentID))
+                FencerResults.Add(f2.TournamentID, new ResultInfo(f2.TournamentID));
 
-            // Check if battle has already been fought           
-            for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
+            FencerResults[f1.TournamentID].Refresh(score1, score2);
+            FencerResults[f2.TournamentID].Refresh(score2, score1);
+
+            // First criterion: sort by wins (descending), index 1 (descending), index 2 (descending)
+            IComparer<KeyValuePair<int, ResultInfo>> comparer = new RangingOrderClass();
+            List<KeyValuePair<int, ResultInfo>> ranking = FencerResults.ToList();
+            ranking.Sort(comparer);
+
+            for (int i = 0; i < ranking.Count; i++)
             {
-                BattleInfo bi = BattleCollection[f1.TournamentID][i];
-                if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
-                    battleExists = true;
-                if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
-                    battleExists = true;
+                FencerResults[ranking[i].Key].Rank = i + 1;
             }
+            #endregion
 
-            if (!battleExists)
-            {
-                BattleInfo b1 = new BattleInfo(f1, score1, f2, score2);
-                BattleInfo b2 = new BattleInfo(f2, score2, f1, score1);
-
-                BattleCollection[f1.TournamentID].Add(b1);
-                BattleCollection[f2.TournamentID].Add(b2);
-
-                // Ranking
-                #region Ranking
-                // Process hits/wins/losses
-                if (!FencerResults.ContainsKey(f1.TournamentID))
-                    FencerResults.Add(f1.TournamentID, new ResultInfo(f1.TournamentID));
-                if (!FencerResults.ContainsKey(f2.TournamentID))
-                    FencerResults.Add(f2.TournamentID, new ResultInfo(f2.TournamentID));
-
-                FencerResults[f1.TournamentID].Refresh(b1);
-                FencerResults[f2.TournamentID].Refresh(b2);
-
-                // First criterion: sort by wins (descending), index 1 (descending), index 2 (descending)
-                IComparer<KeyValuePair<int, ResultInfo>> comparer = new RangingOrderClass();
-                List<KeyValuePair<int, ResultInfo>> ranking = FencerResults.ToList();
-                ranking.Sort(comparer);
-
-                for (int i = 0; i < ranking.Count; i++)
-                {
-                    FencerResults[ranking[i].Key].Rank = i + 1;
-                }
-                #endregion
-            }
             RefreshDisplay();
         }
 
@@ -244,37 +197,27 @@ namespace FencingPC
             }
 
             // Display battles
-            #region Process battles
-            for (int i = 0; i < FencersInTournament.Count; i++)
+            #region Display battles
+            for(int i = 0; i < BattleList.Count; i++)
             {
-                int current_ID = FencersInTournament[i].TournamentID;
+                BattleInfo bi = BattleList[i];
 
-                if (BattleCollection.ContainsKey(current_ID))
-                {
-                    List<BattleInfo> b = BattleCollection[current_ID];
+                // Display result for fencer 1                
+                bool victory = bi.Score1 > bi.Score2 ? true : false;
+                PoolEntryDisplay entry = new PoolEntryDisplay(bi.Score1, victory, bi.Fencer1.TournamentID, bi.Fencer2.TournamentID);
+                entry.CallForEdit += PoolEntryDisplay_CallForEdit;
+                Grid.SetRow(entry, bi.Fencer1.TournamentID);
+                Grid.SetColumn(entry, bi.Fencer2.TournamentID);
+                grdTableaux.Children.Add(entry);
+                entry.Refresh();
 
-                    for (int m = 0; m < b.Count; m++)
-                    {
-                        bool victory = b[m].Score1 > b[m].Score2 ? true : false;
-                        PoolEntryDisplay entry = new PoolEntryDisplay(b[m].Score1, victory, b[m].Fencer1.TournamentID - 1, b[m].Fencer2.TournamentID - 1);
-                        entry.CallForEdit += PoolEntryDisplay_CallForEdit;
-                        Grid.SetRow(entry, b[m].Fencer1.TournamentID);
-                        Grid.SetColumn(entry, b[m].Fencer2.TournamentID);
-                        grdTableaux.Children.Add(entry);
-                        entry.Refresh();
-
-                        /*
-                        TextBlock res1 = new TextBlock() { Text = b[m].Score1.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style };
-                        Grid.SetRow(res1, b[m].Fencer1.TournamentID);
-                        Grid.SetColumn(res1, b[m].Fencer2.TournamentID);
-                        grdTableaux.Children.Add(res1);
-                        */
-                    }
-                }
-                else
-                {
-                    throw new Exception("Error: no battles with ID " + current_ID.ToString());
-                }
+                // Display result for fencer 1                
+                PoolEntryDisplay entry2 = new PoolEntryDisplay(bi.Score2, !victory, bi.Fencer2.TournamentID, bi.Fencer1.TournamentID);
+                entry2.CallForEdit += PoolEntryDisplay_CallForEdit;
+                Grid.SetRow(entry2, bi.Fencer2.TournamentID);
+                Grid.SetColumn(entry2, bi.Fencer1.TournamentID);
+                grdTableaux.Children.Add(entry2);
+                entry2.Refresh();
             }
             #endregion
 
@@ -325,31 +268,19 @@ namespace FencingPC
                 if (scoreRow >= FencersInTournament.Count || scoreCol >= FencersInTournament.Count)
                     return;
 
-                Fencer f1 = FencersInTournament[scoreRow];
-                Fencer f2 = FencersInTournament[scoreCol];
-
-                int bscore1 = 0;
-                int bscore2 = 0;
+                Fencer f1 = FencersInTournament[scoreRow - 1];
+                Fencer f2 = FencersInTournament[scoreCol - 1];
 
                 // Edit battle
-                for (int i = 0; i < BattleCollection[f1.TournamentID].Count; i++)
+                int idx = FindBattle(f1, f2);
+                if (idx >= 0)
                 {
-                    BattleInfo bi = BattleCollection[f1.TournamentID][i];
-                    if (bi.Fencer1.RosterID == f1.RosterID && bi.Fencer2.RosterID == f2.RosterID)
-                    {
-                        bscore1 = bi.Score1;
-                        bscore2 = bi.Score2;
-                    }
-                    else if (bi.Fencer1.RosterID == f2.RosterID && bi.Fencer2.RosterID == f1.RosterID)
-                    {
-                        bscore1 = bi.Score2;
-                        bscore2 = bi.Score1;
-                    }
-                }
+                    BattleInfo bi = BattleList[idx];
 
-                if (EnterBattleEvent != null)
-                {
-                    EnterBattleEvent(this, new BattleEventArgs(f1.RosterID, f2.RosterID, bscore1, bscore2));
+                    if (EnterBattleEvent != null)
+                    {
+                        EnterBattleEvent(this, new BattleEventArgs(bi.Fencer1.RosterID, bi.Fencer2.RosterID, bi.Score1, bi.Score2));
+                    }
                 }
             }
         }
