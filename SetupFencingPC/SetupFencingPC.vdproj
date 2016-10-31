@@ -329,7 +329,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Fencing PC"
         "ProductCode" = "8:{C5ECF942-C246-4CE4-93FA-8C2504B09B36}"
-        "PackageCode" = "8:{7E176A2E-20A4-4D08-857E-50B6C6168D8A}"
+        "PackageCode" = "8:{212AE5D5-6610-452F-BB88-4C7A33189E2F}"
         "UpgradeCode" = "8:{725170D8-C1AB-4A38-B6E1-77E5A741B8E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -449,6 +449,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7E8219EA6CC2435889D4101BB57510E2"
+            {
+            "Name" = "8:Fencing PC"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_5F25662A90724059BBEF9D4E0E5C9757"
+            "Folder" = "8:_966E67AAB2BC4A0E8F3499D825F2251C"
+            "WorkingFolder" = "8:_9A8913571DF947B88230D996F3BABF96"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E73BDDDC46E847D0A380BD1506F5A386"
+            {
+            "Name" = "8:Fencing PC"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_5F25662A90724059BBEF9D4E0E5C9757"
+            "Folder" = "8:_85E0868450294E3FB53A4FBBAE604501"
+            "WorkingFolder" = "8:_9A8913571DF947B88230D996F3BABF96"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
