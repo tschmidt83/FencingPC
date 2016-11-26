@@ -25,11 +25,10 @@ namespace FencingPC
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private string DocumentsDir;
+
         // Roster
         private ObservableCollection<Fencer> Roster = new ObservableCollection<Fencer>();
-
-        // Directory of the executable
-        private string ProjectDir = string.Empty;
 
         // Edit mode
         private EditModeType EditMode = EditModeType.None;
@@ -54,14 +53,14 @@ namespace FencingPC
             cbFencerMembership.Items.Add(GetResourceString("str_Member_Guest"));
             cbFencerMembership.SelectedIndex = 0;
 
-            // Determine directory of the executable
-            ProjectDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            DocumentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.None);
+            DocumentsDir += @"\ts.software\FencingPC\";
 
             // If a roster file exists, load it
-            if (System.IO.File.Exists(ProjectDir + @"\roster.xml"))
+            if (System.IO.File.Exists(DocumentsDir + "roster.xml"))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\roster.xml", System.IO.FileMode.Open))
+                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + "roster.xml", System.IO.FileMode.Open))
                 {
                     Roster = (ObservableCollection<Fencer>)serializer.Deserialize(fs);
                 }
@@ -163,11 +162,11 @@ namespace FencingPC
             }
             else
             {
-                if (System.IO.File.Exists(ProjectDir + @"\images\" + path))
+                if (System.IO.File.Exists(DocumentsDir + @"images\" + path))
                 {
                     BitmapImage img = new BitmapImage();
                     img.BeginInit();
-                    img.UriSource = new Uri(ProjectDir + @"\images\" + path, UriKind.Absolute);
+                    img.UriSource = new Uri(DocumentsDir + @"images\" + path, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
                     img.EndInit();
                     imgFencerImage.Source = img;
@@ -191,8 +190,11 @@ namespace FencingPC
 
         private void SaveRoster()
         {
+            if (!System.IO.Directory.Exists(DocumentsDir))
+                System.IO.Directory.CreateDirectory(DocumentsDir);
+
             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
-            using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\roster.xml", System.IO.FileMode.Create))
+            using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"roster.xml", System.IO.FileMode.Create))
             {
                 serializer.Serialize(fs, Roster);
             }
@@ -225,14 +227,14 @@ namespace FencingPC
                 {
                     // Determine file name
                     string FileName = String.Format("{0:yyyy-MM-dd_HH-mm-ss}.png", DateTime.Now);
-                    if (!System.IO.Directory.Exists(ProjectDir + @"\images"))
+                    if (!System.IO.Directory.Exists(DocumentsDir + @"images"))
                     {
-                        System.IO.Directory.CreateDirectory(ProjectDir + @"\images");
+                        System.IO.Directory.CreateDirectory(DocumentsDir + @"images");
                     }
 
                     BitmapSource bmp = w.LastImage;
 
-                    string imgPath = ProjectDir + @"\images\" + FileName;
+                    string imgPath = DocumentsDir + @"images\" + FileName;
 
                     using (System.IO.FileStream fs = new System.IO.FileStream(imgPath, System.IO.FileMode.Create))
                     {
@@ -253,12 +255,12 @@ namespace FencingPC
             {
                 if (!string.IsNullOrEmpty(SelectedFencer.ImageName))
                 {
-                    if (System.IO.File.Exists(ProjectDir + @"\images\" + SelectedFencer.ImageName))
+                    if (System.IO.File.Exists(DocumentsDir + @"images\" + SelectedFencer.ImageName))
                     {
                         try
                         {
                             imgFencerImage.Source = null;
-                            System.IO.File.Delete(ProjectDir + @"\images\" + SelectedFencer.ImageName);
+                            System.IO.File.Delete(DocumentsDir + @"images\" + SelectedFencer.ImageName);
                         }
                         catch
                         {
@@ -300,6 +302,9 @@ namespace FencingPC
                 membership = (MembershipType)cbFencerMembership.SelectedIndex;
 
                 rosterID = int.Parse(tbFencerID.Text);
+
+                firstName = SetNameCase(firstName);
+                lastName = SetNameCase(lastName);
             }
             catch
             {
@@ -337,6 +342,27 @@ namespace FencingPC
                 imgFencerImage.Source = null;
                 SelectedFencer = null;
             }
+        }
+
+        private string SetNameCase(string name)
+        {
+            string temp = name.Trim(new char[] { ' ', '-' });
+            string result = char.ToUpper(temp[0]).ToString();
+            
+            // Goal: make every character that follows ' ' or '-' uppercase
+            for (int i = 0; i < temp.Length - 1; i++)
+            {
+                if (temp[i] == ' ' || temp[i] == '-')
+                {
+                    result += char.ToUpper(temp[i + 1]).ToString();
+                }
+                else
+                {
+                    result += temp[i + 1];
+                }
+            }            
+
+            return result;
         }
 
         private void btnFencerCancel_Click(object sender, RoutedEventArgs e)
@@ -494,13 +520,13 @@ namespace FencingPC
         private void StartTournament()
         {
             // Check for backup file
-            if (System.IO.File.Exists(ProjectDir + @"\backup.xml"))
+            if (System.IO.File.Exists(DocumentsDir + @"backup.xml"))
             {
                 List<BattleInfo> backup_battles = null;
 
                 // Get battles from backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Open))
+                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Open))
                 {
                     backup_battles = (List<BattleInfo>)serializer.Deserialize(fs);
                 }
@@ -519,30 +545,33 @@ namespace FencingPC
             {
 
 #if DEBUG
-                Random r = new Random();
-                for (int i = 0; i < 10; i++)
+                if (Roster.Count > 1)
                 {
-                    int f1 = 0;
-                    int f2 = 0;
-                    do
+                    Random r = new Random();
+                    for (int i = 0; i < 10; i++)
                     {
-                        f1 = r.Next(Roster.Count);
-                        f2 = r.Next(Roster.Count);
-                    }
-                    while (f1 == f2);
+                        int f1 = 0;
+                        int f2 = 0;
+                        do
+                        {
+                            f1 = r.Next(Roster.Count);
+                            f2 = r.Next(Roster.Count);
+                        }
+                        while (f1 == f2);
 
-                    int s1 = 0;
-                    int s2 = 0;
-                    do
-                    {
-                        s1 = r.Next(6);
-                        s2 = r.Next(6);
-                    }
-                    while (s1 == s2);
+                        int s1 = 0;
+                        int s2 = 0;
+                        do
+                        {
+                            s1 = r.Next(6);
+                            s2 = r.Next(6);
+                        }
+                        while (s1 == s2);
 
-                    if (f1 != f2 && s1 != s2)
-                    {
-                        CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2, true);
+                        if (f1 != f2 && s1 != s2)
+                        {
+                            CtrTournament.AddBattle(Roster[f1], s1, Roster[f2], s2, true);
+                        }
                     }
                 }
 #endif

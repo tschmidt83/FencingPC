@@ -22,8 +22,7 @@ namespace FencingPC
     /// </summary>
     public partial class TournamentControl : UserControl
     {
-        // Directory of the executable
-        private string ProjectDir = string.Empty;
+        private string DocumentsDir;
 
         private List<Fencer> FencersInTournament = new List<Fencer>();
 
@@ -35,7 +34,8 @@ namespace FencingPC
 
         public TournamentControl()
         {
-            ProjectDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            DocumentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.None);
+            DocumentsDir += @"\ts.software\FencingPC\";
 
             InitializeComponent();
         }
@@ -48,9 +48,9 @@ namespace FencingPC
             BattleList.Clear();
 
             // Remove backup file
-            if(System.IO.File.Exists(ProjectDir + @"\backup.xml"))
+            if(System.IO.File.Exists(DocumentsDir + @"backup.xml"))
             {
-                System.IO.File.Delete(ProjectDir + @"\backup.xml");
+                System.IO.File.Delete(DocumentsDir + @"backup.xml");
             }
         }
 
@@ -107,7 +107,7 @@ namespace FencingPC
             {
                 // Write new battle list to backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Create))
+                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Create))
                 {
                     serializer.Serialize(fs, BattleList);
                 }
@@ -145,7 +145,7 @@ namespace FencingPC
             {
                 // Write new battle list to backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(ProjectDir + @"\backup.xml", System.IO.FileMode.Create))
+                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Create))
                 {
                     serializer.Serialize(fs, BattleList);
                 }
