@@ -8,6 +8,22 @@
              d:DesignHeight="500" d:DesignWidth="700">
     <DockPanel LastChildFill="True" Background="White">
         <Button DockPanel.Dock="Top" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_EnterBattle}" Name="btnEnterBattle" Click="btnEnterBattle_Click"/>
+
+        <Expander DockPanel.Dock="Bottom" Header="{DynamicResource str_Header_Export}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="Gefechte"/>
+                <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource StandardButtonStyle}" Content="Tableaux"/>
+                <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource StandardButtonStyle}" Content="Ergebnisse"/>
+            </Grid>
+        </Expander>
         
         <Grid DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>

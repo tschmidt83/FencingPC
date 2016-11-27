@@ -24,6 +24,8 @@
     <sys:String x:Key="str_Header_ResultScreen">Ergebnisbildschirm:</sys:String>
     <sys:String x:Key="str_Header_Webcam">Webcam:</sys:String>
 
+    <sys:String x:Key="str_Header_Export">Export</sys:String>
+    
     <!-- Regular strings -->
     <sys:String x:Key="str_Gender_Male">Männlich</sys:String>
     <sys:String x:Key="str_Gender_Female">Weiblich</sys:String>
@@ -62,5 +64,5 @@
     <sys:String x:Key="str_Button_EnterBattle">Gefecht eintragen</sys:String>
     <sys:String x:Key="str_Button_EditBattle">Gefecht bearbeiten</sys:String>
     <sys:String x:Key="str_Button_DeleteBattle">Gefecht löschen</sys:String>
-    
+
 </ResourceDictionary>
