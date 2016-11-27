@@ -82,5 +82,13 @@ namespace FencingPC
                 CallForEdit(this, null);
             }
         }
+
+        private void menuEditBattle_Click(object sender, RoutedEventArgs e)
+        {
+            if(CallForEdit != null)
+            {
+                CallForEdit(this, null);
+            }
+        }
     }
 }

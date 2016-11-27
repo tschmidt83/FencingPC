@@ -9,6 +9,12 @@
     <Grid>
         <Border BorderBrush="Black" BorderThickness="1.0" Name="bdrDisplay">
             <TextBlock Text="V5" FontSize="20" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Margin="0" Name="tbDisplay"/>
+
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource str_Button_EditBattle}" Click="menuEditBattle_Click"/>
+                </ContextMenu>
+            </Border.ContextMenu>
         </Border>
     </Grid>
 </UserControl>

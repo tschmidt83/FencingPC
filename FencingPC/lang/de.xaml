@@ -60,5 +60,7 @@
     <sys:String x:Key="str_Button_Cancel">Abbrechen</sys:String>
 
     <sys:String x:Key="str_Button_EnterBattle">Gefecht eintragen</sys:String>
+    <sys:String x:Key="str_Button_EditBattle">Gefecht bearbeiten</sys:String>
+    <sys:String x:Key="str_Button_DeleteBattle">Gefecht löschen</sys:String>
     
 </ResourceDictionary>
