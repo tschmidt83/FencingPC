@@ -25,8 +25,6 @@ namespace FencingPC
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private string DocumentsDir;
-
         // Roster
         private ObservableCollection<Fencer> Roster = new ObservableCollection<Fencer>();
 
@@ -53,14 +51,18 @@ namespace FencingPC
             cbFencerMembership.Items.Add(GetResourceString("str_Member_Guest"));
             cbFencerMembership.SelectedIndex = 0;
 
-            DocumentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.None);
-            DocumentsDir += @"\ts.software\FencingPC\";
+            if (string.IsNullOrEmpty(Properties.Settings.Default.DocumentDir))
+            {
+                Properties.Settings.Default.DocumentDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.None);
+                Properties.Settings.Default.DocumentDir += @"\ts.software\FencingPC\";
+                Properties.Settings.Default.Save();
+            }
 
             // If a roster file exists, load it
-            if (System.IO.File.Exists(DocumentsDir + "roster.xml"))
+            if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + "roster.xml"))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + "roster.xml", System.IO.FileMode.Open))
+                using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + "roster.xml", System.IO.FileMode.Open))
                 {
                     Roster = (ObservableCollection<Fencer>)serializer.Deserialize(fs);
                 }
@@ -162,11 +164,11 @@ namespace FencingPC
             }
             else
             {
-                if (System.IO.File.Exists(DocumentsDir + @"images\" + path))
+                if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"images\" + path))
                 {
                     BitmapImage img = new BitmapImage();
                     img.BeginInit();
-                    img.UriSource = new Uri(DocumentsDir + @"images\" + path, UriKind.Absolute);
+                    img.UriSource = new Uri(Properties.Settings.Default.DocumentDir + @"images\" + path, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
                     img.EndInit();
                     imgFencerImage.Source = img;
@@ -190,11 +192,11 @@ namespace FencingPC
 
         private void SaveRoster()
         {
-            if (!System.IO.Directory.Exists(DocumentsDir))
-                System.IO.Directory.CreateDirectory(DocumentsDir);
+            if (!System.IO.Directory.Exists(Properties.Settings.Default.DocumentDir))
+                System.IO.Directory.CreateDirectory(Properties.Settings.Default.DocumentDir);
 
             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
-            using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"roster.xml", System.IO.FileMode.Create))
+            using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + @"roster.xml", System.IO.FileMode.Create))
             {
                 serializer.Serialize(fs, Roster);
             }
@@ -227,14 +229,14 @@ namespace FencingPC
                 {
                     // Determine file name
                     string FileName = String.Format("{0:yyyy-MM-dd_HH-mm-ss}.png", DateTime.Now);
-                    if (!System.IO.Directory.Exists(DocumentsDir + @"images"))
+                    if (!System.IO.Directory.Exists(Properties.Settings.Default.DocumentDir + @"images"))
                     {
-                        System.IO.Directory.CreateDirectory(DocumentsDir + @"images");
+                        System.IO.Directory.CreateDirectory(Properties.Settings.Default.DocumentDir + @"images");
                     }
 
                     BitmapSource bmp = w.LastImage;
 
-                    string imgPath = DocumentsDir + @"images\" + FileName;
+                    string imgPath = Properties.Settings.Default.DocumentDir + @"images\" + FileName;
 
                     using (System.IO.FileStream fs = new System.IO.FileStream(imgPath, System.IO.FileMode.Create))
                     {
@@ -255,12 +257,12 @@ namespace FencingPC
             {
                 if (!string.IsNullOrEmpty(SelectedFencer.ImageName))
                 {
-                    if (System.IO.File.Exists(DocumentsDir + @"images\" + SelectedFencer.ImageName))
+                    if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"images\" + SelectedFencer.ImageName))
                     {
                         try
                         {
                             imgFencerImage.Source = null;
-                            System.IO.File.Delete(DocumentsDir + @"images\" + SelectedFencer.ImageName);
+                            System.IO.File.Delete(Properties.Settings.Default.DocumentDir + @"images\" + SelectedFencer.ImageName);
                         }
                         catch
                         {
@@ -520,13 +522,13 @@ namespace FencingPC
         private void StartTournament()
         {
             // Check for backup file
-            if (System.IO.File.Exists(DocumentsDir + @"backup.xml"))
+            if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"backup.xml"))
             {
                 List<BattleInfo> backup_battles = null;
 
                 // Get battles from backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Open))
+                using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + @"backup.xml", System.IO.FileMode.Open))
                 {
                     backup_battles = (List<BattleInfo>)serializer.Deserialize(fs);
                 }

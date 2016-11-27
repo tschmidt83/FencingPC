@@ -22,8 +22,6 @@ namespace FencingPC
     /// </summary>
     public partial class TournamentControl : UserControl
     {
-        private string DocumentsDir;
-
         private List<Fencer> FencersInTournament = new List<Fencer>();
 
         private Dictionary<int, ResultInfo> FencerResults = new Dictionary<int, ResultInfo>();
@@ -34,9 +32,6 @@ namespace FencingPC
 
         public TournamentControl()
         {
-            DocumentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.None);
-            DocumentsDir += @"\ts.software\FencingPC\";
-
             InitializeComponent();
         }
 
@@ -48,10 +43,17 @@ namespace FencingPC
             BattleList.Clear();
 
             // Remove backup file
-            if(System.IO.File.Exists(DocumentsDir + @"backup.xml"))
+            if(System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"backup.xml"))
             {
-                System.IO.File.Delete(DocumentsDir + @"backup.xml");
+                System.IO.File.Delete(Properties.Settings.Default.DocumentDir + @"backup.xml");
             }
+
+            grdTableaux.Children.Clear();
+            grdTableaux.RowDefinitions.Clear();
+            grdTableaux.ColumnDefinitions.Clear();
+
+            grdResults.Children.Clear();
+            grdResults.RowDefinitions.Clear();
         }
 
         private int FindBattle(Fencer f1, Fencer f2)
@@ -107,7 +109,7 @@ namespace FencingPC
             {
                 // Write new battle list to backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Create))
+                using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + @"backup.xml", System.IO.FileMode.Create))
                 {
                     serializer.Serialize(fs, BattleList);
                 }
@@ -145,7 +147,7 @@ namespace FencingPC
             {
                 // Write new battle list to backup file
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BattleInfo>));
-                using (System.IO.FileStream fs = new System.IO.FileStream(DocumentsDir + @"backup.xml", System.IO.FileMode.Create))
+                using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + @"backup.xml", System.IO.FileMode.Create))
                 {
                     serializer.Serialize(fs, BattleList);
                 }

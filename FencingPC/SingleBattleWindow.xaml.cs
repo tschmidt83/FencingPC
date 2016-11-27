@@ -21,7 +21,6 @@ namespace FencingPC
     {
         private IEnumerable<Fencer> Roster = null;
         //public BattleInfo ResultingBattle = null;
-        private string ProgramPath;
 
         private Fencer m_Battle_Fencer1;
 
@@ -60,7 +59,6 @@ namespace FencingPC
 
         public SingleBattleWindow()
         {
-            ProgramPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             InitializeComponent();
         }
 
@@ -146,12 +144,12 @@ namespace FencingPC
             if (!string.IsNullOrEmpty(imageID))
             {
                 // Check for image
-                if (System.IO.File.Exists(ProgramPath + @"\images\" + imageID))
+                if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"images\" + imageID))
                 {
                     // Load image
                     BitmapImage img = new BitmapImage();
                     img.BeginInit();
-                    img.UriSource = new Uri(ProgramPath + @"\images\" + imageID, UriKind.Absolute);
+                    img.UriSource = new Uri(Properties.Settings.Default.DocumentDir + @"images\" + imageID, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
                     img.EndInit();
 
@@ -171,12 +169,12 @@ namespace FencingPC
             if (!string.IsNullOrEmpty(imageID))
             {
                 // Check for image
-                if (System.IO.File.Exists(ProgramPath + @"\images\" + imageID))
+                if (System.IO.File.Exists(Properties.Settings.Default.DocumentDir + @"images\" + imageID))
                 {
                     // Load image
                     BitmapImage img = new BitmapImage();
                     img.BeginInit();
-                    img.UriSource = new Uri(ProgramPath + @"\images\" + imageID, UriKind.Absolute);
+                    img.UriSource = new Uri(Properties.Settings.Default.DocumentDir + @"images\" + imageID, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
                     img.EndInit();
 
