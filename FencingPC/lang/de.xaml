@@ -37,6 +37,7 @@
     <sys:String x:Key="str_FirstName">Vorname</sys:String>
     <sys:String x:Key="str_LastName">Nachname</sys:String>
 
+    <sys:String x:Key="str_Name">Name</sys:String>
     <sys:String x:Key="str_Victories">Siege</sys:String>
     <sys:String x:Key="str_Index_1">Index 1</sys:String>
     <sys:String x:Key="str_HitsGiven">Treffer geg.</sys:String>
@@ -44,6 +45,15 @@
     <sys:String x:Key="str_Index_2">Index 2</sys:String>
     <sys:String x:Key="str_Rank">Platz</sys:String>
 
+    <sys:String x:Key="str_ResetTournament">Turnier zurücksetzen</sys:String>
+    <sys:String x:Key="str_ResetTournamentQuestion">Soll das Turnier danach zurückgesetzt werden? Alle nicht gesicherten Ergebnisse werden dabei gelöscht!</sys:String>
+    <sys:String x:Key="str_Yes">Ja</sys:String>
+    <sys:String x:Key="str_No">Nein</sys:String>
+
+    <sys:String x:Key="str_Export_Battles">Gefechte exportieren</sys:String>
+    <sys:String x:Key="str_Export_Table">Tableaux exportieren</sys:String>
+    <sys:String x:Key="str_Export_Results">Ergebnis exportieren</sys:String>
+    
     <!-- Button captions -->
     <sys:String x:Key="str_Button_Edit">Bearbeiten</sys:String>
     <sys:String x:Key="str_Button_New">Neu</sys:String>
@@ -65,4 +75,8 @@
     <sys:String x:Key="str_Button_EditBattle">Gefecht bearbeiten</sys:String>
     <sys:String x:Key="str_Button_DeleteBattle">Gefecht löschen</sys:String>
 
+    <sys:String x:Key="str_Button_Export_Battles">Gefechte</sys:String>
+    <sys:String x:Key="str_Button_Export_Table">Tableaux</sys:String>
+    <sys:String x:Key="str_Button_Export_Results">Ergebnis</sys:String>
+    
 </ResourceDictionary>

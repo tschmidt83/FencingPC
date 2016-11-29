@@ -19,9 +19,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="Gefechte"/>
-                <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource StandardButtonStyle}" Content="Tableaux"/>
-                <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource StandardButtonStyle}" Content="Ergebnisse"/>
+                <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Battles}" Name="btnExport_Battles" Click="btnExport_Battles_Click"/>
+                <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Table}" Name="btnExport_Tableaux" Click="btnExport_Tableaux_Click"/>
+                <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Results}" Name="btnExport_Results" Click="btnExport_Results_Click"/>
             </Grid>
         </Expander>
         

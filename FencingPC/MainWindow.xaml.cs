@@ -538,7 +538,6 @@ namespace FencingPC
                     for(int i = 0; i < backup_battles.Count; i++)
                     {
                         BattleInfo bi = backup_battles[i];
-                        Fencer f;
                         CtrTournament.AddBattle(GetFencerByID(bi.Fencer1.RosterID), bi.Score1, GetFencerByID(bi.Fencer2.RosterID), bi.Score2, false);
                     }
                 }

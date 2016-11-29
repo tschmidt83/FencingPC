@@ -177,7 +177,7 @@ namespace FencingPC
             FencerResults[f2.TournamentID].Refresh(score2, score1);
 
             // First criterion: sort by wins (descending), index 1 (descending), index 2 (descending)
-            IComparer<KeyValuePair<int, ResultInfo>> comparer = new RangingOrderClass();
+            IComparer<KeyValuePair<int, ResultInfo>> comparer = new RankingOrderClass();
             List<KeyValuePair<int, ResultInfo>> ranking = FencerResults.ToList();
             ranking.Sort(comparer);
 
@@ -322,9 +322,102 @@ namespace FencingPC
                 EnterBattleEvent(this, null);
             }
         }
+
+        private void btnExport_Battles_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "CSV-File (*.csv)|*.csv";
+            dlg.Title = GetResourceString("str_Export_Battles");
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+
+                AskForTournamentReset();
+            }
+        }
+
+        private void btnExport_Tableaux_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "CSV-File (*.csv)|*.csv";
+            dlg.Title = GetResourceString("str_Export_Table");
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+
+                AskForTournamentReset();
+            }
+        }
+
+        private void btnExport_Results_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "CSV-File (*.csv)|*.csv";
+            dlg.Title = GetResourceString("str_Export_Results");
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(dlg.FileName, false))
+                {
+                    writer.Write(GetResourceString("str_Name") + ";");
+                    writer.Write(GetResourceString("str_Victories") + ";");
+                    writer.Write(GetResourceString("str_Index_1") + ";");
+                    writer.Write(GetResourceString("str_HitsGiven") + ";");
+                    writer.Write(GetResourceString("str_HitsTaken") + ";");
+                    writer.Write(GetResourceString("str_Index_2") + ";");
+                    writer.WriteLine(GetResourceString("str_Rank") + ";");
+
+                    for (int i = 0; i < FencersInTournament.Count; i++)
+                    {
+                        int current_ID = FencersInTournament[i].TournamentID;
+
+                        ResultInfo r = null;
+                        try
+                        {
+                            r = FencerResults[current_ID];
+                        }
+                        catch
+                        {
+                            r = null;
+                        }
+
+                        if (r != null)
+                        {
+                            writer.WriteLine("{0};{1};{2:0.0};{3};{4};{5};{6}", FencersInTournament[i].DisplayName, r.Wins, r.WinRatio, r.HitsGiven, r.HitsTaken, r.HitIndex, r.Rank);
+                        }
+                    }
+
+                    writer.Close();
+                }
+
+                AskForTournamentReset();
+            }
+        }
+
+        private void AskForTournamentReset()
+        {
+            MessageBoxResult r = MessageBox.Show(GetResourceString("str_ResetTournamentQuestion"), GetResourceString("str_ResetTournament"), MessageBoxButton.YesNo);
+            if (r == MessageBoxResult.Yes)
+            {
+                ResetTournament();
+            }
+        }
+
+        private string GetResourceString(string identifier)
+        {
+            string result = string.Empty;
+
+            if (Application.Current.Resources[identifier] != null)
+                result = Application.Current.Resources[identifier].ToString();
+
+            return result;
+        }
     }
 
-    public class RangingOrderClass : IComparer<KeyValuePair<int, ResultInfo>>
+    public class RankingOrderClass : IComparer<KeyValuePair<int, ResultInfo>>
     {
         public int Compare(KeyValuePair<int, ResultInfo> x, KeyValuePair<int, ResultInfo> y)
         {
