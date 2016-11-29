@@ -288,7 +288,7 @@ namespace FencingPC
                 int scoreRow = pe.ScoreRow;
                 int scoreCol = pe.ScoreCol;
 
-                if (scoreRow >= FencersInTournament.Count || scoreCol >= FencersInTournament.Count)
+                if (scoreRow > FencersInTournament.Count || scoreCol > FencersInTournament.Count)
                     return;
 
                 Fencer f1 = FencersInTournament[scoreRow - 1];
@@ -332,6 +332,15 @@ namespace FencingPC
 
             if (result == true)
             {
+                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(dlg.FileName, false))
+                {
+                    foreach (BattleInfo bi in BattleList)
+                    {
+                        writer.WriteLine(String.Format("{0};{1};{2};{3};", bi.Fencer1.DisplayName, bi.Fencer2.DisplayName, bi.Score1, bi.Score2));
+                    }
+
+                    writer.Close();
+                }
 
                 AskForTournamentReset();
             }
