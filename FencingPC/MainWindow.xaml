@@ -101,6 +101,13 @@
             <local:TournamentControl x:Name="CtrTournament"/>
         </TabItem>
         
+        <!-- Club ranking -->
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Ranking}"/>
+            </TabItem.Header>
+        </TabItem>
+        
         <!-- Application settings -->
         <TabItem>
             <TabItem.Header>

@@ -10,6 +10,7 @@
     <!-- Headers -->
     <sys:String x:Key="str_Header_Members">Mitglieder</sys:String>
     <sys:String x:Key="str_Header_Tournament">Turnier</sys:String>
+    <sys:String x:Key="str_Header_Ranking">Rangliste</sys:String>
     <sys:String x:Key="str_Header_Settings">Einstellungen</sys:String>
 
     <sys:String x:Key="str_Header_FirstName">Vorname:</sys:String>
@@ -78,5 +79,6 @@
     <sys:String x:Key="str_Button_Export_Battles">Gefechte</sys:String>
     <sys:String x:Key="str_Button_Export_Table">Tableaux</sys:String>
     <sys:String x:Key="str_Button_Export_Results">Ergebnis</sys:String>
+    <sys:String x:Key="str_Button_Export_ToRanking">Zur Rangliste</sys:String>
     
 </ResourceDictionary>

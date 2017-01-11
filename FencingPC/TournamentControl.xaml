@@ -19,10 +19,12 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Battles}" Name="btnExport_Battles" Click="btnExport_Battles_Click"/>
                 <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Table}" Name="btnExport_Tableaux" Click="btnExport_Tableaux_Click" IsEnabled="False"/>
                 <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_Results}" Name="btnExport_Results" Click="btnExport_Results_Click"/>
+                <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Export_ToRanking}" Name="btnExport_ToRanking" Click="btnExport_ToRanking_Click"/>
             </Grid>
         </Expander>
         

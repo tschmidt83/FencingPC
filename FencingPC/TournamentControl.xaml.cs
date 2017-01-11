@@ -406,6 +406,11 @@ namespace FencingPC
             }
         }
 
+        private void btnExport_ToRanking_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void AskForTournamentReset()
         {
             MessageBoxResult r = MessageBox.Show(GetResourceString("str_ResetTournamentQuestion"), GetResourceString("str_ResetTournament"), MessageBoxButton.YesNo);
