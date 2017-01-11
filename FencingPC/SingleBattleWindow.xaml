@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FencingPC"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Gefecht eintragen" Height="400" Width="400" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
@@ -26,8 +27,16 @@
         <Image Margin="2" Grid.Row="0" Grid.Column="2" Name="imgFencer2"/>
 
         <!-- Fencer selection -->
-        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="0" Name="cbFencer1" SelectionChanged="cbFencer1_SelectionChanged"/>
-        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="2" Name="cbFencer2" SelectionChanged="cbFencer2_SelectionChanged"/>
+        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="0" Name="cbFencer1" SelectionChanged="cbFencer1_SelectionChanged">
+            <ComboBox.Resources>
+                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+            </ComboBox.Resources>
+        </ComboBox>
+        <ComboBox Style="{StaticResource StandardComboBoxStyle}" Grid.Row="1" Grid.Column="2" Name="cbFencer2" SelectionChanged="cbFencer2_SelectionChanged">
+            <ComboBox.Resources>
+                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+            </ComboBox.Resources>
+        </ComboBox>
         <TextBlock Style="{StaticResource VersusTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="vs"/>
 
         <!-- Scores -->

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FencingPC"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700">
     <DockPanel LastChildFill="True" Background="White">
@@ -35,10 +36,16 @@
             </Grid.ColumnDefinitions>
 
             <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrTableaux" ScrollChanged="scrTableaux_ScrollChanged">
+                <ScrollViewer.Resources>
+                    <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+                </ScrollViewer.Resources>
                 <Grid Name="grdTableaux"/>
             </ScrollViewer>
 
             <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Name="scrResults" ScrollChanged="scrTableaux_ScrollChanged">
+                <ScrollViewer.Resources>
+                    <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+                </ScrollViewer.Resources>
                 <Grid Name="grdResults">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

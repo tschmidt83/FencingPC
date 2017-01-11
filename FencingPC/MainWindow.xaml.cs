@@ -110,11 +110,12 @@ namespace FencingPC
             if (EditMode == EditModeType.None)
             {
                 int rosterID = 1;
-                // Determine next free roster ID;
-                if (Roster.Count > 0)
+
+                // Determine next free roster ID
+                for(int i = 0; i < Roster.Count; i++)
                 {
-                    Fencer last = Roster.Last();
-                    rosterID = last.RosterID + 1;
+                    if (Roster[i].RosterID >= rosterID)
+                        rosterID = Roster[i].RosterID + 1;
                 }
 
                 // Enable edit mode
@@ -192,9 +193,18 @@ namespace FencingPC
 
         private void SaveRoster()
         {
+            // Make sure export directory exists
             if (!System.IO.Directory.Exists(Properties.Settings.Default.DocumentDir))
                 System.IO.Directory.CreateDirectory(Properties.Settings.Default.DocumentDir);
 
+            // Sort roster by display name; temporary list due to performance issues
+            IComparer<Fencer> comparer = new RosterOrderClass();
+            List<Fencer> tempRoster = Roster.ToList();
+            tempRoster.Sort(comparer);
+            Roster = new ObservableCollection<Fencer>(tempRoster);
+            lbRoster.ItemsSource = Roster;
+
+            // Save
             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Fencer>));
             using (System.IO.FileStream fs = new System.IO.FileStream(Properties.Settings.Default.DocumentDir + @"roster.xml", System.IO.FileMode.Create))
             {
@@ -713,6 +723,16 @@ namespace FencingPC
             {
                 cbSettings_WebcamSelect.Items.Add(fi.Name);
             }
+        }
+    }
+
+    public class RosterOrderClass : IComparer<Fencer>
+    {
+        public int Compare(Fencer x, Fencer y)
+        {
+            // Compare by display name, ascending
+            int compareResult = x.DisplayName.CompareTo(y.DisplayName);
+            return compareResult;
         }
     }
 }

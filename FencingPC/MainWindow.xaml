@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FencingPC"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{DynamicResource str_Title_Main}" Height="480" Width="640" Loaded="Window_Loaded" Closing="Window_Closing">
     <TabControl TabStripPlacement="Top">
@@ -27,7 +28,11 @@
                     <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_Edit}" Name="btnEditFencer" Click="btnEditFencer_Click"/>
                     <Button DockPanel.Dock="Bottom" Style="{StaticResource StandardButtonStyle}" Content="{DynamicResource str_Button_New}" Name="btnNewFencer" Click="btnNewFencer_Click"/>
 
-                    <ListBox DockPanel.Dock="Top" Style="{StaticResource StandardListBoxStyle}" Name="lbRoster"/>
+                    <ListBox DockPanel.Dock="Top" Style="{StaticResource StandardListBoxStyle}" Name="lbRoster">
+                        <ListBox.Resources>
+                            <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+                        </ListBox.Resources>
+                    </ListBox>
                 </DockPanel>
 
                 <!-- Controls for editing a dataset -->

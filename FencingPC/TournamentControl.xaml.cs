@@ -205,7 +205,7 @@ namespace FencingPC
             for (int i = 0; i < FencersInTournament.Count; i++)
             {
                 // Column 0
-                grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grdTableaux.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(56, GridUnitType.Pixel) });
                 TextBlock tb_left = new TextBlock() { Text = FencersInTournament[i].TournamentID.ToString() + ": " + FencersInTournament[i].DisplayName, Style = Application.Current.Resources["TableauxHeaderStyle"] as Style };
                 Grid.SetRow(tb_left, i + 1);
                 Grid.SetColumn(tb_left, 0);
@@ -264,7 +264,7 @@ namespace FencingPC
                 try
                 {
                     ResultInfo r = FencerResults[current_ID];
-                    grdResults.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    grdResults.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(56, GridUnitType.Pixel) });
                     AddToResultGrid(new TextBlock() { Text = r.Wins.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 0);
                     AddToResultGrid(new TextBlock() { Text = r.WinRatio.ToString("0.0"), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 1);
                     AddToResultGrid(new TextBlock() { Text = r.HitsGiven.ToString(), Style = Application.Current.Resources["TableauxResultStyle"] as Style }, current_ID, 2);
