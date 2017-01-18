@@ -16,7 +16,16 @@ namespace FencingPC
         {
             get { return m_FencerID; }
             set { m_FencerID = value; NotifyPropertyChanged("FencerID"); }
-        }        
+        }
+
+        /*** FencerName ***/
+        private string m_FencerName;
+
+        public string FencerName
+        {
+            get { return m_FencerName; }
+            set { m_FencerName = value; NotifyPropertyChanged("FencerName"); }
+        }
 
         /*** HitsGiven ***/
         private int m_HitsGiven = 0;
@@ -88,6 +97,12 @@ namespace FencingPC
         public ResultInfo(int id)
         {
             m_FencerID = id;
+        }
+
+        public ResultInfo(int id, string name)
+        {
+            m_FencerID = id;
+            m_FencerName = name;
         }
 
         public void ClearResult()

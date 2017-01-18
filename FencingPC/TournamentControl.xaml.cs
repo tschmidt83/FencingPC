@@ -169,9 +169,9 @@ namespace FencingPC
             #region Ranking
             // Process hits/wins/losses
             if (!FencerResults.ContainsKey(f1.TournamentID))
-                FencerResults.Add(f1.TournamentID, new ResultInfo(f1.TournamentID));
+                FencerResults.Add(f1.TournamentID, new ResultInfo(f1.TournamentID, f1.DisplayName));
             if (!FencerResults.ContainsKey(f2.TournamentID))
-                FencerResults.Add(f2.TournamentID, new ResultInfo(f2.TournamentID));
+                FencerResults.Add(f2.TournamentID, new ResultInfo(f2.TournamentID, f2.DisplayName));
 
             FencerResults[f1.TournamentID].Refresh(score1, score2);
             FencerResults[f2.TournamentID].Refresh(score2, score1);
@@ -343,6 +343,7 @@ namespace FencingPC
                 }
 
                 AskForTournamentReset();
+                MessageBox.Show(GetResourceString("str_ExportDone"));
             }
         }
 
@@ -357,6 +358,7 @@ namespace FencingPC
             {
 
                 AskForTournamentReset();
+                MessageBox.Show(GetResourceString("str_ExportDone"));
             }
         }
 
@@ -403,12 +405,60 @@ namespace FencingPC
                 }
 
                 AskForTournamentReset();
+                MessageBox.Show(GetResourceString("str_ExportDone"));
             }
         }
 
         private void btnExport_ToRanking_Click(object sender, RoutedEventArgs e)
         {
+            string dirName = Properties.Settings.Default.DocumentDir + "Ranking\\" + DateTime.Now.Year.ToString();
+            if (!System.IO.Directory.Exists(dirName))
+                System.IO.Directory.CreateDirectory(dirName);
 
+            string fileName = dirName + String.Format(@"\\{0:yyyy-MM-dd_HH-mm}.xml", DateTime.Now);
+
+            using (System.Xml.XmlTextWriter writer = new System.Xml.XmlTextWriter(fileName, Encoding.UTF8))
+            {
+                writer.Formatting = System.Xml.Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Ranking");
+
+                for (int i = 0; i < FencersInTournament.Count; i++)
+                {
+                    int current_ID = FencersInTournament[i].TournamentID;
+
+                    ResultInfo r = null;
+                    try
+                    {
+                        r = FencerResults[current_ID];
+                    }
+                    catch
+                    {
+                        r = null;
+                    }
+
+                    if (r != null)
+                    {
+                        writer.WriteStartElement("ResultInfo");
+                        
+                        writer.WriteAttributeString("ID", r.FencerID.ToString());
+                        writer.WriteAttributeString("FencerName", r.FencerName);
+                        writer.WriteAttributeString("Wins", r.Wins.ToString());
+                        writer.WriteAttributeString("WinRatio", r.WinRatio.ToString("0.0##"));
+                        writer.WriteAttributeString("HitsGiven", r.HitsGiven.ToString());
+                        writer.WriteAttributeString("HitsTaken", r.HitsTaken.ToString());
+                        writer.WriteAttributeString("HitIndex", r.HitIndex.ToString());
+                        writer.WriteAttributeString("Rank", r.Rank.ToString());
+
+                        writer.WriteEndElement();
+                    }
+                }
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+
+            AskForTournamentReset();
+            MessageBox.Show(GetResourceString("str_ExportDone"));
         }
 
         private void AskForTournamentReset()

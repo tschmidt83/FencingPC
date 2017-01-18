@@ -50,6 +50,7 @@
     <sys:String x:Key="str_ResetTournamentQuestion">Soll das Turnier danach zurückgesetzt werden? Alle nicht gesicherten Ergebnisse werden dabei gelöscht!</sys:String>
     <sys:String x:Key="str_Yes">Ja</sys:String>
     <sys:String x:Key="str_No">Nein</sys:String>
+    <sys:String x:Key="str_ExportDone">Export abgeschlossen!</sys:String>
 
     <sys:String x:Key="str_Export_Battles">Gefechte exportieren</sys:String>
     <sys:String x:Key="str_Export_Table">Tableaux exportieren</sys:String>

@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{DynamicResource str_Title_Main}" Height="480" Width="640" Loaded="Window_Loaded" Closing="Window_Closing">
-    <TabControl TabStripPlacement="Top">
+    <TabControl TabStripPlacement="Top" Name="tabMaster" SelectionChanged="tabMaster_SelectionChanged">
         <!-- Roster management -->
         <TabItem>
             <TabItem.Header>
@@ -104,7 +104,7 @@
         <!-- Club ranking -->
         <TabItem>
             <TabItem.Header>
-                <TextBlock Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Ranking}"/>
+                <TextBlock x:Name="tabRanking" Style="{StaticResource TabItemHeaderStyle}" Text="{DynamicResource str_Header_Ranking}"/>
             </TabItem.Header>
         </TabItem>
         

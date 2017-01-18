@@ -37,6 +37,9 @@ namespace FencingPC
         // Array of connected screens
         private System.Windows.Forms.Screen[] ConnectedScreens;
 
+        // Ranking related
+        private bool ReloadRankingFlag = true;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -722,6 +725,23 @@ namespace FencingPC
             foreach (FilterInfo fi in cams)
             {
                 cbSettings_WebcamSelect.Items.Add(fi.Name);
+            }
+        }
+
+        private void tabMaster_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Reload ranking, if necessary
+            if(e.AddedItems[0] is TabItem && (e.AddedItems[0] as TabItem).Name == "tabRanking")
+            {
+                ReloadRanking();
+            }
+        }
+
+        private void ReloadRanking()
+        {
+            if (ReloadRankingFlag)
+            {
+                ReloadRankingFlag = false;
             }
         }
     }
